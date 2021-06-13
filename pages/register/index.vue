@@ -139,7 +139,7 @@
                     home_address: this.home_address,
                     work_address: this.work_address,
                 };
-                return this.$store.dispatch('isUserRegister', isRegister)
+                return this.$store.dispatch('Auth/isUserRegister', isRegister)
             },
         }
     }

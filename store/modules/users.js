@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import Swal from "sweetalert2";
 
 const state = () => ({
     getUsers: {},
@@ -15,14 +16,17 @@ const getters = {
 };
 
 const actions = {
-    getUsers(context) {
-        Axios.get(Axios.defaults.baseURL + 'panel/user').then(res => {
-            const getUsers = res.data.data.data;
-            context.commit('getUsers', getUsers);
-        }).catch(err => {
-            console.log(err)
-        })
+
+    async getUsers(context) {
+        await Axios.get(Axios.defaults.baseURL + 'panel/users')
+            .then(res => {
+                const getUsers = res.data.data.users;
+                context.commit('getUsers', getUsers);
+            }).catch(err => {
+                console.log(err)
+            })
     },
+
     showUser(context, payload) {
         const userId = payload.id;
         const users = context.state.getUsers;
@@ -34,6 +38,7 @@ const actions = {
             }
         }
     },
+
     editUser(context, payload) {
         const userId = payload.id;
         const users = context.state.getUsers;
@@ -44,7 +49,95 @@ const actions = {
             }
         }
     },
-    isUserUpdate(context, payload) {
+
+    async isUserRegister(context, payload) {
+        let formData = new FormData();
+        formData.append('first_name', payload.first_name);
+        formData.append('last_name', payload.last_name);
+        formData.append('username', payload.username);
+        formData.append('email', payload.email);
+        formData.append('mobile', payload.mobile);
+        formData.append('home_phone', payload.home_phone);
+        formData.append('zip_code', payload.zip_code);
+        formData.append('password', payload.password);
+        formData.append('confirmation_password', payload.confirmation_password);
+        formData.append('home_address', payload.home_address);
+        formData.append('work_address', payload.work_address);
+        formData.append('state', payload.state);
+        formData.append('image', payload.image);
+
+        await Axios.post(Axios.defaults.baseURL + 'panel/users/store', formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            })
+            .then(res => {
+                switch (res.status) {
+                    case 201:
+                        Swal.fire('Success!', res.data.message, 'success')
+                            .then(() => {
+                                const getUsers = res.data.data;
+                                context.commit('getUsers', getUsers);
+                                this.$router.push('/panel/users');
+                            });
+                        break;
+                    case 403:
+                        Swal.fire('Warning!', res.data.message, 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 422:
+                        alert("ok");
+                        Swal.fire('Error!', 'whooops', 'error')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 503:
+                        Swal.fire('Danger!', 'Service is Unavailable', 'error');
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            }).catch(err => {
+                switch (err.response.status) {
+                    case 422:
+                        for (let i = 0; i < err.response.data.errors.length; i++) {
+                            Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
+                                .then(() => {
+
+                                });
+                        }
+                        break;
+                    case 404:
+                        Swal.fire('Warning!', '404 Not Found!', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 500:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 503:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            })
+    },
+
+    async isUserUpdate(context, payload) {
         const isUpdate = {
             id: payload.id,
             first_name: payload.first_name,
@@ -56,21 +149,21 @@ const actions = {
             zip_code: payload.zip_code,
             password: payload.password,
             confirmation_password: payload.confirmation_password,
-            home_address:payload.home_address,
+            home_address: payload.home_address,
             work_address: payload.work_address,
         };
-        Axios.patch(Axios.defaults.baseURL + 'panel/user/' + payload.id, isUpdate)
+        await Axios.patch(Axios.defaults.baseURL + 'panel/users/' + payload.id, isUpdate)
             .then(res => {
-            const getUsers = res.data.data.data;
-            context.commit('getUsers', getUsers);
-        }).catch(err => {
+                const getUsers = res.data.data;
+                context.commit('getUsers', getUsers);
+            }).catch(err => {
             console.log(err)
         })
     },
     deleteUser(context, payload) {
         state.isUser = payload.id;
         const id = payload.id;
-        Axios.delete(Axios.defaults.baseURL + 'panel/user/' + id)
+        Axios.delete(Axios.defaults.baseURL + 'panel/users/' + id)
             .then(() => {
                 /*let idx = user.indexOf(id)
                 const getUsers = state.getUsers.splice(idx,1)*/

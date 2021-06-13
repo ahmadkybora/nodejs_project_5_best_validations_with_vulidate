@@ -75,8 +75,7 @@
                     <th>Full Name</th>
                     <th>UserName</th>
                     <th>Email</th>
-                    <th>Gender</th>
-                    <th>Icon</th>
+                    <th>Image</th>
                     <th>Status</th>
                     <th>Created At / Updated At</th>
                     <th>Option</th>
@@ -88,10 +87,8 @@
                     <td>{{ user.first_name + ' ' + user.last_name }}</td>
                     <td v-text="user.username"></td>
                     <td v-text="user.email"></td>
-                    <td v-if="user.gender === 0">Male</td>
-                    <td v-else-if="user.gender === 1">Female</td>
                     <td>
-                        <img class="rounded-circle" :src="user.icon" style="width: 50px; height: 50px">
+                        <img class="rounded-circle" :src="user.image" style="width: 50px; height: 50px">
                     </td>
                     <td>
                         <button v-if="user.state === 'ACTIVE'" class="btn btn-success btn-sm disabled"
@@ -107,7 +104,7 @@
                                 v-text="user.state">PENDING
                         </button>
                     </td>
-                    <td>{{ user.created_at + ' ' + user.updated_at }}</td>
+                    <td>{{ user.createdAt + ' ' + user.updatedAt }}</td>
                     <td>
                         <a @click="userShow(user)" data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-eye text-primary"></i>

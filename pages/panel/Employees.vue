@@ -227,7 +227,7 @@
         this.employee = employee;
       },
       employeeDelete(id) {
-        return this.$store.dispatch('Employees/deleteUser', {id});
+        return this.$store.dispatch('Employees/deleteEmployee', {id});
       },
       registerEmployee() {
         this.editMode = false;

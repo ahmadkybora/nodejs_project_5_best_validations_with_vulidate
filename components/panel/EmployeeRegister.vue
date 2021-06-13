@@ -813,7 +813,7 @@
             },
             employeeUpdate(employee) {
                 const isUpdate = {
-                    id: employee,
+                    id: employee.id,
                     first_name: employee.first_name,
                     last_name: employee.last_name,
                     username: employee.username,

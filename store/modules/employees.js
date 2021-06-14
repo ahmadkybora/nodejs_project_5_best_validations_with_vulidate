@@ -151,7 +151,108 @@ const actions = {
             })
             .then(res => {
                 switch (res.status) {
+                    case 200:
+                        Swal.fire('Warning!', res.data.message, 'warning')
+                            .then(() => {
+
+                            });
+                        break;
                     case 201:
+                        Swal.fire('Success!', res.data.message, 'success')
+                            .then(() => {
+                                const getEmployees = res.data.data;
+                                context.commit('getEmployees', getEmployees);
+                                this.$router.push('/panel/employees');
+                            });
+                        break;
+                    case 403:
+                        Swal.fire('Warning!', res.data.message, 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            }).catch(err => {
+                switch (err.response.status) {
+                    case 422:
+                        if (err.response.data.errors === null) {
+                            Swal.fire('Warning!', err.response.data.message, 'warning')
+                                .then(() => {
+
+                                });
+                        }
+                        for (let i = 0; i < err.response.data.errors.length; i++) {
+                            Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
+                                .then(() => {
+
+                                });
+                        }
+                        break;
+                    case 403:
+                        Swal.fire('Warning!', err.response.data.errors.message, 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 404:
+                        Swal.fire('Warning!', '404 Not Found!', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 500:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 503:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            })
+    },
+
+    /**
+     * update Employee
+     * @param context
+     * @param payload
+     * @returns {Promise<void>}
+     */
+    async isEmployeeUpdate(context, payload) {
+        let formData = new FormData();
+        formData.append('first_name', payload.first_name);
+        formData.append('last_name', payload.last_name);
+        formData.append('username', payload.username);
+        formData.append('email', payload.email);
+        formData.append('mobile', payload.mobile);
+        formData.append('home_phone', payload.home_phone);
+        formData.append('zip_code', payload.zip_code);
+        formData.append('password', payload.password);
+        formData.append('confirmation_password', payload.confirmation_password);
+        formData.append('home_address', payload.home_address);
+        formData.append('work_address', payload.work_address);
+        formData.append('state', payload.state);
+        formData.append('image', payload.image);
+
+        await Axios.post(Axios.defaults.baseURL + 'panel/employees/update/' + payload.id, formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            })
+            .then(res => {
+                switch (res.status) {
+                    case 200:
                         Swal.fire('Success!', res.data.message, 'success')
                             .then(() => {
                                 const getEmployees = res.data.data;
@@ -213,35 +314,12 @@ const actions = {
                 }
             })
     },
+    async searchEmployee(context, payload) {
+        const full_text_search = {
+            full_text_search: payload.full_text_search
+        };
 
-    /**
-     * update Employee
-     * @param context
-     * @param payload
-     * @returns {Promise<void>}
-     */
-    async isEmployeeUpdate(context, payload) {
-        let formData = new FormData();
-        formData.append('first_name', payload.first_name);
-        formData.append('last_name', payload.last_name);
-        formData.append('username', payload.username);
-        formData.append('email', payload.email);
-        formData.append('mobile', payload.mobile);
-        formData.append('home_phone', payload.home_phone);
-        formData.append('zip_code', payload.zip_code);
-        formData.append('password', payload.password);
-        formData.append('confirmation_password', payload.confirmation_password);
-        formData.append('home_address', payload.home_address);
-        formData.append('work_address', payload.work_address);
-        formData.append('state', payload.state);
-        formData.append('image', payload.image);
-
-        await Axios.post(Axios.defaults.baseURL + 'panel/employees/update/' + payload.id, formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            })
+        await Axios.post(Axios.defaults.baseURL + 'panel/employees/search', full_text_search)
             .then(res => {
                 switch (res.status) {
                     case 200:

@@ -7,11 +7,11 @@
     <PopularProducts/>
     <ProductCategories/>
     <PopularBrands/>
-<!--    <Articles/>
-    <ArticleCategories/>-->
+    <Articles/>
+    <ArticleCategories/>
     <PopularArticles/>
     <Nuxt/>
-<!--    <brands/>-->
+    <brands/>
     <Footer/>
   </div>
 </template>

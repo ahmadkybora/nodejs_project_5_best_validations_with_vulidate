@@ -10,13 +10,11 @@
                          src="../../../assets/loader.gif"
                          alt="Card image cap"
                          style="width: 230px; height:150px;">
-                    <img v-else class="card-img-top float-right" :src="brand.icon" alt="Card image cap" style="width:150px;">
+                    <img v-else class="card-img-top float-right" :src="brand.image" alt="Card image cap"
+                         style="width:150px;">
                     <div class="card-body">
-                        <!--<h5 class="card-title" v-text="brand.title.substring(0, 10)"></h5>
-                        <p class="card-text" v-text="brand.description.substring(0, 10)"></p>-->
-                        <h5 class="card-title" v-text="brand.title"></h5>
-                        <p class="card-text" v-text="brand.description"></p>
-                        <p class="card-text">Price: {{ brand.price }}</p>
+                        <h5 class="card-title" v-text="brand.name.substring(0, 10)"></h5>
+                        <p class="card-text" v-text="brand.description.substring(0, 10)"></p>
                     </div>
                     <div class="card-footer">
                         <div class="row">
@@ -39,45 +37,48 @@
 </template>
 
 <script>
-  import $ from 'jquery';
-  window.$ = $;
-  import carousel from 'vue-owl-carousel'
-  import { mapState } from 'vuex'
-  import BrandItems from '../../../api/front/BrandItems.json';
+    import $ from 'jquery';
 
-  export default {
-    name: "Brands",
-    components: { carousel },
-    data() {
-      return {
-        loading: true,
-        items: BrandItems,
-      }
-    },
-    mounted() {
-      this.loading = false;
-      return this.$store.dispatch('Brands/isBrands');
-    },
-    computed: mapState({
-      brands: state => state.Brands.isBrands
-    }),
-    methods: {
-      likes(product) {
-        let likes = {
-          product: product.id,
-          state: 'LIKE',
-        };
-        return this.$store.dispatch('likes', likes);
-      },
-      dislikes(product) {
-        let dislikes = {
-          product: product.id,
-          state: 'DISLIKE',
-        };
-        return this.$store.dispatch('dislikes', dislikes);
-      }
+    window.$ = $;
+    import carousel from 'vue-owl-carousel'
+    import {mapState} from 'vuex'
+    import BrandItems from '../../../api/front/BrandItems.json';
+
+    export default {
+        name: "Brands",
+        components: {carousel},
+        data() {
+            return {
+                loading: true,
+                items: BrandItems,
+            }
+        },
+        mounted() {
+            this.loading = false;
+            return this.$store.dispatch('Brands/isBrands');
+        },
+        computed: {
+            ...mapState({
+                brands: state => state.Brands.isBrands,
+            })
+        },
+        methods: {
+            likes(product) {
+                let likes = {
+                    product: product.id,
+                    state: 'LIKE',
+                };
+                return this.$store.dispatch('likes', likes);
+            },
+            dislikes(product) {
+                let dislikes = {
+                    product: product.id,
+                    state: 'DISLIKE',
+                };
+                return this.$store.dispatch('dislikes', dislikes);
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

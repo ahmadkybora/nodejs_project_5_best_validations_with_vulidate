@@ -27,9 +27,9 @@ const actions = {
         await Axios.get(Axios.defaults.baseURL + 'brands')
             .then(res => {
                 const isBrands = res.data.data.brands;
-                const popularBrands = res.data.data.popular_brands;
+                //const popularBrands = res.data.data.popular_brands;
                 context.commit('isBrands', isBrands);
-                context.commit('popularBrands', popularBrands)
+                //context.commit('popularBrands', popularBrands)
             }).catch(err => {
                 console.log(err)
             })
@@ -51,7 +51,7 @@ const actions = {
         formData.append('name', payload.name);
         formData.append('employeeId', payload.employeeId);
         formData.append('description', payload.description);
-        formData.append('status', payload.status);
+        formData.append('state', payload.state);
         formData.append('image', payload.image);
 
         await Axios.post(Axios.defaults.baseURL + 'panel/brands/store', formData,

@@ -88,13 +88,6 @@ const actions = {
 
                             });
                         break;
-                    case 422:
-                        alert("ok");
-                        Swal.fire('Error!', 'whooops', 'error')
-                            .then(() => {
-
-                            });
-                        break;
                     case 503:
                         Swal.fire('Danger!', 'Service is Unavailable', 'error');
                         break;
@@ -105,12 +98,24 @@ const actions = {
             }).catch(err => {
                 switch (err.response.status) {
                     case 422:
+                        if (err.response.data.errors === null) {
+                            Swal.fire('Warning!', err.response.data.message, 'warning')
+                                .then(() => {
+
+                                });
+                        }
                         for (let i = 0; i < err.response.data.errors.length; i++) {
                             Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
                                 .then(() => {
 
                                 });
                         }
+                        break;
+                    case 403:
+                        Swal.fire('Warning!', err.response.data.errors.message, 'warning')
+                            .then(() => {
+
+                            });
                         break;
                     case 404:
                         Swal.fire('Warning!', '404 Not Found!', 'warning')
@@ -157,8 +162,8 @@ const actions = {
                 const getUsers = res.data.data;
                 context.commit('getUsers', getUsers);
             }).catch(err => {
-            console.log(err)
-        })
+                console.log(err)
+            })
     },
     deleteUser(context, payload) {
         state.isUser = payload.id;

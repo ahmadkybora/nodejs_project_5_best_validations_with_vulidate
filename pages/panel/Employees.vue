@@ -17,46 +17,19 @@
           </div>
         </div>
       </div>
+      <form class="form-inline" @submit.prevent="onFullTextSearch()">
+        <div class="form-group">
+          <input type="text" v-model="full_text_search" name="full-name" id="full-name"
+                 class="form-control" placeholder="Full Name">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="form-control btn btn-sm btn-success"><i
+                  class="fas fa-search"></i></button>
+        </div>
+      </form>
       <table class="table table-striped tab-content table-bordered table-responsive">
         <thead class="text-center">
         <tr>
-          <th>#</th>
-          <th>
-            <form class="form-inline" @submit.prevent="onFullNameSearch()">
-              <div class="form-group">
-                <input type="text" v-model="full_name_search" name="full-name" id="full-name"
-                       class="form-control" placeholder="Full Name">
-              </div>
-              <div class="form-group">
-                <button type="submit" class="form-control btn btn-sm btn-success"><i
-                  class="fas fa-search"></i></button>
-              </div>
-            </form>
-          </th>
-          <th>
-            <!--<form class="form-inline" @submit.prevent="onUserNameSearch()">
-                <div class="form-group">
-                    <input type="text" v-model="username_search" name="username" id="username"
-                           class="form-control" placeholder="User Name">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="form-control btn btn-sm btn-success"><i
-                            class="fas fa-search"></i></button>
-                </div>
-            </form>-->
-          </th>
-          <th>
-            <!--<form class="form-inline" @submit.prevent="onEmailSearch()">
-                <div class="form-group">
-                    <input type="email" v-model="email_search" name="email" id="email" class="form-control"
-                           placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="form-control btn btn-sm btn-success"><i
-                            class="fas fa-search"></i></button>
-                </div>
-            </form>-->
-          </th>
           <th>
             <select class="form-select form-select-sm" aria-label=".form-select-sm example">
               <option value="ACTIVE">ACTIVE</option>
@@ -65,8 +38,6 @@
               <option value="PENDING">PENDING</option>
             </select>
           </th>
-          <th>#</th>
-          <th>#</th>
         </tr>
         </thead>
         <thead class="text-center">
@@ -154,7 +125,7 @@
       return {
         token: window.localStorage.getItem('token-employee'),
         state_search: '',
-        full_name_search: '',
+        full_text_search: '',
         username_search: '',
         email_search: '',
         search: '',
@@ -234,8 +205,9 @@
         this.employee = '';
         $('#user-register').toggle();
       },
-      onFullNameSearch() {
-        return EmployeeService.onFullNameSearch()
+      onFullTextSearch() {
+        const full_text_search = this.full_text_search;
+        return this.$store.dispatch('Employees/searchEmployee', {full_text_search});
       },
       onUserNameSearch() {
         return EmployeeService.onUserNameSearch();

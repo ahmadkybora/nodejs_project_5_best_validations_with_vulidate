@@ -17,7 +17,7 @@
                             <div class="error alert-danger" v-if="!$v.description.minLength">Name must have at least
                                 {{ $v.description.$params.minLength.min }} letters.
                             </div>
-                            <div class="error alert-danger" v-if="!$v.status.required">Status is required.</div>
+                            <div class="error alert-danger" v-if="!$v.state.required">Status is required.</div>
                             <div class="error alert-danger" v-if="!$v.image.required">Image is required.</div>
 
                             <div class="row">
@@ -66,11 +66,11 @@
                                     <div class="form-group">
                                         <div class="form-check">
                                             <input
-                                                    :class="{ 'form-group--error': $v.status.$error }"
+                                                    :class="{ 'form-group--error': $v.state.$error }"
                                                     class="form-check-input"
                                                     type="radio"
-                                                    v-model.trim="$v.status.$model"
-                                                    name="status"
+                                                    v-model.trim="$v.state.$model"
+                                                    name="state"
                                                     id="ACTIVE"
                                                     value="ACTIVE"
                                             >
@@ -81,22 +81,35 @@
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" v-model="status" name="status"
-                                                   id="INACTIVE" value="INACTIVE">
-                                            <label class="form-check-label" for="INACTIVE">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="INACTIVE"
+                                                   value="INACTIVE">
+                                            <label class="form-check-label"
+                                                   for="INACTIVE">
                                                 INACTIVE
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" v-model="status" name="status"
-                                                   id="SUSPENDED" value="SUSPENDED">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="SUSPENDED"
+                                                   value="SUSPENDED">
                                             <label class="form-check-label" for="SUSPENDED">
                                                 SUSPENDED
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" v-model="status" name="status"
-                                                   id="PENDING" value="PENDING">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="PENDING"
+                                                   value="PENDING">
                                             <label class="form-check-label" for="PENDING">
                                                 PENDING
                                             </label>
@@ -106,7 +119,10 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <input type="file" @change="onFileSelected" name="image" id="image"
+                                        <input type="file"
+                                               @change="onFileSelected"
+                                               name="image"
+                                               id="image"
                                                class="form-control">
                                     </div>
                                     <div v-if="isSelected !== false">
@@ -159,7 +175,7 @@
                 name: '',
                 employeeId: '',
                 description: '',
-                status: '',
+                state: '',
                 image: '',
                 submitStatus: '',
                 isSelected: false,
@@ -180,7 +196,7 @@
                 minLength: minLength(4),
                 maxLength: maxLength(255)
             },
-            status: {
+            state: {
                 required,
             },
             image: {
@@ -215,7 +231,7 @@
                         name: this.name,
                         employeeId: this.employeeId,
                         description: this.description,
-                        status: this.status,
+                        state: this.state,
                         image: this.image,
                     };
                     return this.$store.dispatch('Brands/RegisterBrand', isRegister)
@@ -223,7 +239,7 @@
                             this.name = '';
                             this.employeeId = '';
                             this.description = '';
-                            this.status = '';
+                            this.state = '';
                             this.image = '';
                             this.submitStatus = '';
                             this.isSelected = false;

@@ -91,17 +91,17 @@
             <img class="rounded-circle" :src="brand.image" style="width: 50px; height: 50px">
           </td>
           <td>
-            <button v-if="brand.status === 'ACTIVE'" class="btn btn-success btn-sm disabled"
-                    v-text="brand.status">ACTIVE
+            <button v-if="brand.state === 'ACTIVE'" class="btn btn-success btn-sm disabled"
+                    v-text="brand.state">ACTIVE
             </button>
-            <button v-if="brand.status === 'INACTIVE'" class="btn btn-warning btn-sm disabled"
-                    v-text="brand.status">INACTIVE
+            <button v-if="brand.state === 'INACTIVE'" class="btn btn-warning btn-sm disabled"
+                    v-text="brand.state">INACTIVE
             </button>
-            <button v-if="brand.status === 'SUSPENDED'" class="btn btn-secondary btn-sm disabled"
-                    v-text="brand.status">SUSPENDED
+            <button v-if="brand.state === 'SUSPENDED'" class="btn btn-secondary btn-sm disabled"
+                    v-text="brand.state">SUSPENDED
             </button>
-            <button v-if="brand.status === 'PENDING'" class="btn btn-danger btn-sm disabled"
-                    v-text="brand.status">PENDING
+            <button v-if="brand.state === 'PENDING'" class="btn btn-danger btn-sm disabled"
+                    v-text="brand.state">PENDING
             </button>
           </td>
           <td>{{ brand.createdAt + ' ' + brand.updatedAt }}</td>

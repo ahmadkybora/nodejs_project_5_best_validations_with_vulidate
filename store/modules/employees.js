@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from 'axios';
 import Swal from "sweetalert2";
 
 const state = () => ({
@@ -16,10 +16,10 @@ const getters = {
 };
 
 const actions = {
-    async getEmployees(context) {
-        await Axios.get(Axios.defaults.baseURL + 'panel/employees')
+    async getEmployees(context, page = 1) {
+        await Axios.get(Axios.defaults.baseURL + `panel/employees?page=${page}`)
             .then(res => {
-                const getEmployees = res.data.data.employees;
+                const getEmployees = res.data.data;
                 context.commit('getEmployees', getEmployees);
             }).catch(err => {
                 console.log(err)
@@ -326,6 +326,7 @@ const actions = {
                         Swal.fire('Success!', res.data.message, 'success')
                             .then(() => {
                                 const getEmployees = res.data.data;
+                                console.log(getEmployees);
                                 context.commit('getEmployees', getEmployees);
                                 this.$router.push('/panel/employees');
                             });

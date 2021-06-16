@@ -1,46 +1,36 @@
 <template>
-    <div class="container-fluid mt-5">
+    <!--//-->
+    <nav class="navbar navbar-expand-lg navbar-light shadow-md">
+        <a href="" class="navbar-brand text-warning ml-3">
+            <i class="fas fa-dove" style="font-size: 25px"></i>
+        </a>
+        <!--//-->
+        <form action="" class="form-inline w-50 m-auto">
+            <div class="input-group w-100">
+                <input type="text" v-model="search" class="form-control" placeholder="Search...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--//-->
         <div class="row">
-            <div class="col-lg-3 col-md-4">
-                <div v-if="isAuthenticated">
-                    <p>Welcome: </p>
-                    <h5 v-text="fullName"></h5>
-                </div>
+            <div v-if="isAuthenticated" class="offset-lg-6 col-lg-6 offset-md-6 col-md-6">
+                <button @click="isUserLogout()" class="btn btn-warning" style="border-radius: 15px;">Logout</button>
+                <button class="btn btn-success" style="border-radius: 15px;">Profile</button>
+                <nuxt-link to="/profile/cart"><i class="fa fa-cart-plus fa-2x text-secondary" aria-hidden="true"></i>
+                </nuxt-link>
             </div>
-            <div class="col-lg-5 col-md-4">
-                <form>
-                    <div class="row">
-                        <div class="col-md-11">
-                            <div class="form-group">
-                                <input type="text" v-model="search" name="search" id="search" class="form-control"
-                                       placeholder="What Do You Mind...">
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="form-group">
-                                <button class="btn bbtn" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-4 col-md-4">
-                <div class="row">
-                    <div v-if="isAuthenticated" class="offset-lg-6 col-lg-6 offset-md-6 col-md-6">
-                        <button @click="isUserLogout()" class="btn btn-warning" style="border-radius: 15px;">Logout</button>
-                        <button class="btn btn-success" style="border-radius: 15px;">Profile</button>
-                        <nuxt-link to="/profile/cart" ><i class="fa fa-cart-plus fa-2x text-secondary" aria-hidden="true"></i></nuxt-link>
-                    </div>
-                    <div v-else>
-                        <nuxt-link class="bbtn btn" to="/login">Login</nuxt-link>
-                        <nuxt-link class="bbtn btn" to="/register">Register</nuxt-link>
-                    </div>
-                </div>
+            <div v-else>
+                <nuxt-link class="bbtn btn" to="/login">Login</nuxt-link>
+                <nuxt-link class="bbtn btn" to="/register">Register</nuxt-link>
             </div>
         </div>
-    </div>
+        <!--//-->
+    </nav>
+    <!--//-->
 </template>
 
 <script>
@@ -60,7 +50,7 @@
             }),
         },
         methods: {
-            isUserLogout(){
+            isUserLogout() {
                 return this.$store.dispatch('Auth/isUserLogout');
             }
         },
@@ -78,5 +68,8 @@
     .bbtn {
         background-color: aquamarine;
         border-radius: 15px;
+    }
+    .input-group > .form-control, .input-group > .form-control-plaintext, .input-group > .custom-select, .input-group > .custom-file {
+        flex: auto;
     }
 </style>

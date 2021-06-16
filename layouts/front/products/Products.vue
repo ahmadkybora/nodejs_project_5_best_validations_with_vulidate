@@ -1,70 +1,69 @@
 <template>
-    <div class="container">
-        <h3>Products</h3>
-        <!--//-->
-        <carousel :autoplay="true" :nav="false">
-            <div v-for="product in products" :key="product.id" class="col-md-2">
-                <div class="card" style="width: 15rem; border-radius: 15px">
-                    <!--//-->
-                    <img v-if="loading"
-                         class="card-img-top circle float-right"
-                         src="../../../assets/loader.gif"
-                         alt="Card image cap"
-                         style="width: 230px; height:150px;">
-                    <!--//-->
-                    <img v-else
-                         class="card-img-top
-                         float-right"
-                         :src="'localhost:8000/storage/' + product.icon"
-                         alt="Card image cap"
-                         style="width: 230px; height:150px;">
-                    <!--//-->
-                    <!--<img v-else
-                         class="card-img-top circle float-right"
-                         src="https://placeimg.com/200/200/any?1"
-                         alt="Card image cap"
-                         style="width: 230px; height:150px;">-->
-                    <!--//-->
-                    <div class="card-body">
-                        <h5 class="card-title" v-text="product.title"></h5>
-                        <p class="card-text" v-text="product.description"></p>
-                        <p class="card-text">Price: {{ product.price }}</p>
+    <section class="bg-light my-3">
+        <div class="container">
+            <h3 class="text-center">Products</h3>
+            <!--//-->
+            <form action="" class="form-inline w-50 m-auto">
+                <div class="input-group w-100">
+                    <input type="text"
+                           v-model="search"
+                           class="form-control"
+                           placeholder="Search...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
-                    <!--//-->
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col" v-for="item in items" :key="item.id">
+                </div>
+            </form>
+            <!--//-->
+            <div class="row my-5">
+                <carousel :autoplay="true" :nav="false">
+                    <div v-for="product in products" :key="product.id" class="col-md-2">
+                        <div class="card" style="width: 15rem; border-radius: 15px">
+                            <!--//-->
+                            <img v-if="loading"
+                                 class="card-img-top circle float-right"
+                                 src="../../../assets/loader.gif"
+                                 alt="Card image cap"
+                                 style="width: 230px; height:150px;">
+                            <!--//-->
+                            <img v-else
+                                 class="card-img-top
+                         float-right"
+                                 :src="'localhost:8000/storage/' + product.icon"
+                                 alt="Card image cap"
+                                 style="width: 230px; height:150px;">
+                            <!--//-->
+                            <!--<img v-else
+                                 class="card-img-top circle float-right"
+                                 src="https://placeimg.com/200/200/any?1"
+                                 alt="Card image cap"
+                                 style="width: 230px; height:150px;">-->
+                            <!--//-->
+                            <div class="card-body">
+                                <h5 class="card-title" v-text="product.title"></h5>
+                                <p class="card-text" v-text="product.description"></p>
+                                <p class="card-text">Price: {{ product.price }}</p>
+                            </div>
+                            <!--//-->
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col" v-for="item in items" :key="item.id">
                                 <span :class="item.color">
                                     <a @click="info(item.route, product.id)"><i :class="item.icon"></i></a>
                                 </span>
+                                    </div>
+                                </div>
                             </div>
+                            <!--//-->
                         </div>
                     </div>
-                    <!--//-->
-                </div>
+                </carousel>
+                <!--//-->
             </div>
-        </carousel>
-        <!--//-->
-        <!--<div class="owl-carousel owl-theme owl-loaded">
-            <div class="owl-stage-outer">
-                <div class="owl-stage">
-                    <div class="owl-item">...</div>
-                    <div class="owl-item">...</div>
-                    <div class="owl-item">...</div>
-                </div>
-            </div>
-            <div class="owl-nav">
-                <div class="owl-prev">prev</div>
-                <div class="owl-next">next</div>
-            </div>
-            <div class="owl-dots">
-                <div class="owl-dot active"><span></span></div>
-                <div class="owl-dot"><span></span></div>
-                <div class="owl-dot"><span></span></div>
-            </div>
-        </div>-->
-        <!--//-->
-    </div>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -82,6 +81,7 @@
             return {
                 loading: true,
                 items: ProductItems,
+                search: '',
             }
         },
         mounted() {

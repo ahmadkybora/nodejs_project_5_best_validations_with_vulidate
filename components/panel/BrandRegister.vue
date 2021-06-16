@@ -34,10 +34,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <select v-model="employeeId" name="employeeId" id="employeeId"
+                                        <select v-model="employeeId"
+                                                name="employeeId"
+                                                id="employeeId"
                                                 class="form-control">
                                             <option value="">Employee</option>
-                                            <option v-for="employee in employees" :value="employee.id">
+                                            <option v-for="employee in employees.data" :value="employee.id">
                                                 {{ employee.username }}
                                             </option>
                                         </select>
@@ -168,7 +170,7 @@
         middleware: 'checkAuthEmployee',
         name: "BrandRegister",
         mounted() {
-            return this.$store.dispatch('Employees/getEmployees');
+            return this.$store.dispatch('Employees/allEmployees');
         },
         data() {
             return {
@@ -205,7 +207,7 @@
         },
         computed: {
             ...mapState({
-                employees: state => state.Employees.getEmployees,
+                employees: state => state.Employees.allEmployees,
             })
         },
         methods: {

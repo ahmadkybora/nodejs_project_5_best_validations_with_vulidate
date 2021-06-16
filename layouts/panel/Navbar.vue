@@ -8,11 +8,11 @@
                 <div class="col-7"></div>
                 <div class="col-2">
                     <div class="text-center">
-                <!--<span v-if="isLoggedIn">
-                <button class="btn btn-warning btn-circle">
-                    <span @click="isLogout()">Logout</span>
-                </button>
-                </span>-->
+                        <!--<span v-if="isLoggedIn">
+                        <button class="btn btn-warning btn-circle">
+                            <span @click="isLogout()">Logout</span>
+                        </button>
+                        </span>-->
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
 
 <script>
     import $ from 'jquery';
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
 
     window.$ = $;
     export default {

@@ -1,7 +1,22 @@
 <template>
     <div class="container">
-        <h3>Popular Brands</h3>
-
+        <h3 class="text-center">Popular Brands</h3>
+        <!--//-->
+        <form action="" class="form-inline w-50 m-auto">
+            <div class="input-group w-100">
+                <input type="text"
+                       v-model="search"
+                       class="form-control"
+                       placeholder="Search...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!--//-->
+        <div class="row my-5">
         <carousel :autoplay="true" :nav="false">
             <div v-for="brand in popularBrands" :key="brand.id" class="col-md-2">
                 <div class="card" style="width: 15rem; border-radius: 15px">
@@ -35,7 +50,7 @@
                 </div>
             </div>
         </carousel>
-
+        </div>
     </div>
 </template>
 
@@ -55,6 +70,7 @@
             return {
                 items: BrandItems,
                 loading: true,
+                search: '',
             }
         },
         mounted() {

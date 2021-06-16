@@ -2,11 +2,15 @@ import Axios from 'axios';
 import Swal from "sweetalert2";
 
 const state = () => ({
+    allEmployees: {},
     getEmployees: {},
     isEmployee: {}
 });
 
 const getters = {
+    allEmployees(state) {
+        return state.allEmployees
+    },
     getEmployees(state) {
         return state.getEmployees
     },
@@ -16,6 +20,28 @@ const getters = {
 };
 
 const actions = {
+    /**
+     *
+     * @param context
+     * @param all
+     * @returns {Promise<void>}
+     */
+    async allEmployees(context, all = 'all') {
+        await Axios.get(Axios.defaults.baseURL + `panel/employees?all=${all}`)
+            .then(res => {
+                const allEmployees = res.data.data;
+                context.commit('allEmployees', allEmployees);
+            }).catch(err => {
+                console.log(err)
+            })
+    },
+
+    /**
+     *
+     * @param context
+     * @param page
+     * @returns {Promise<void>}
+     */
     async getEmployees(context, page = 1) {
         await Axios.get(Axios.defaults.baseURL + `panel/employees?page=${page}`)
             .then(res => {
@@ -390,6 +416,9 @@ const actions = {
 const mutations = {
     isEmployee(state, payload) {
         state.isEmployee = payload
+    },
+    allEmployees(state, payload) {
+        state.allEmployees = payload
     },
     getEmployees(state, payload) {
         state.getEmployees = payload

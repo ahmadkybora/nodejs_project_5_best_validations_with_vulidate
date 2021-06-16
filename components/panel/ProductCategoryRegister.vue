@@ -4,82 +4,205 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="jumbotron">
-                        <h3 v-if="!editMode" >Register Product Categories</h3>
-                        <h3 v-if="editMode" >Update Product Categories</h3>
+                        <h3 v-if="!editMode">Register Product Categories</h3>
+                        <h3 v-if="editMode">Update Product Categories</h3>
                         <form @submit.prevent="editMode ? categoryUpdate(category) : categoryCreate()">
-
+                            <!--//-->
                             <div class="row">
-
-                                <div class="col-md-6">
+                                <!--//-->
+                                <div class="col-md-6" v-if="editMode">
                                     <div class="form-group">
-                                        <select type="text" v-model="category.brand_id" name="brand_id" id="brand-id"
+                                        <select type="text"
+                                                v-model="category.brand_id"
+                                                name="brandId"
+                                                id="brandId"
                                                 class="form-control">
                                             <option value="">Please Select Brand</option>
-                                            <option v-for="brand in brands" :value="brand.id" v-text="brand.title"></option>
+                                            <option v-for="brand in brands.brands" :value="brand.id"
+                                                    v-text="brand.name"></option>
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
+                                <div class="col-md-6" v-else>
                                     <div class="form-group">
-                                        <input type="text" v-model="category.title" name="title" id="title"
-                                               class="form-control" placeholder="Name">
+                                        <select type="text"
+                                                v-model="brandId"
+                                                name="brandId"
+                                                id="brandId"
+                                                class="form-control">
+                                            <option value="">Please Select Brand</option>
+                                            <option v-for="brand in brands.brands" :value="brand.id"
+                                                    v-text="brand.name"></option>
+                                        </select>
                                     </div>
                                 </div>
-
+                                <!--//-->
+                                <div class="col-md-6" v-if="editMode">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               v-model="category.title"
+                                               name="title"
+                                               id="title"
+                                               class="form-control"
+                                               placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6" v-else>
+                                    <div class="form-group">
+                                        <input type="text"
+                                               v-model="title"
+                                               name="title"
+                                               id="title"
+                                               class="form-control"
+                                               placeholder="Name">
+                                    </div>
+                                </div>
+                                <!--//-->
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <!--//-->
+                                <div class="col-md-12" v-if="editMode">
                                     <div class="form-group">
-                                    <textarea v-model="category.description" name="description" id="description"
-                                              class="form-control" placeholder="Description" rows="7"></textarea>
+                                    <textarea v-model="category.description"
+                                              name="description"
+                                              id="description"
+                                              class="form-control"
+                                              placeholder="Description"
+                                              rows="7"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" v-else>
+                                    <div class="form-group">
+                                    <textarea v-model="description"
+                                              name="description"
+                                              id="description"
+                                              class="form-control"
+                                              placeholder="Description"
+                                              rows="7"></textarea>
+                                    </div>
+                                </div>
+                                <!--//-->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="file">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <!--//-->
+                                        <div class="form-check" v-if="editMode">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="category.state"
+                                                   name="state"
+                                                   id="ACTIVE"
+                                                   value="ACTIVE">
+                                            <label class="form-check-label" for="ACTIVE">
+                                                ACTIVE
+                                            </label>
+                                        </div>
+                                        <div class="form-check" v-else>
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="ACTIVE"
+                                                   value="ACTIVE">
+                                            <label class="form-check-label" for="ACTIVE">
+                                                ACTIVE
+                                            </label>
+                                        </div>
+                                        <!--//-->
+                                        <div class="form-check" v-if="editMode">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="category.state"
+                                                   name="state"
+                                                   id="INACTIVE"
+                                                   value="INACTIVE">
+                                            <label class="form-check-label" for="INACTIVE">
+                                                INACTIVE
+                                            </label>
+                                        </div>
+                                        <div class="form-check" v-else>
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="INACTIVE"
+                                                   value="INACTIVE">
+                                            <label class="form-check-label" for="INACTIVE">
+                                                INACTIVE
+                                            </label>
+                                        </div>
+                                        <!--//-->
+                                        <div class="form-check" v-if="editMode">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="category.state"
+                                                   name="state"
+                                                   id="SUSPENDED"
+                                                   value="SUSPENDED">
+                                            <label class="form-check-label" for="SUSPENDED">
+                                                SUSPENDED
+                                            </label>
+                                        </div>
+                                        <div class="form-check" v-else>
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="SUSPENDED"
+                                                   value="SUSPENDED">
+                                            <label class="form-check-label" for="SUSPENDED">
+                                                SUSPENDED
+                                            </label>
+                                        </div>
+                                        <!--//-->
+                                        <div class="form-check" v-if="editMode">
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="category.state"
+                                                   name="state"
+                                                   id="PENDING"
+                                                   value="PENDING">
+                                            <label class="form-check-label" for="PENDING">
+                                                PENDING
+                                            </label>
+                                        </div>
+                                        <div class="form-check" v-else>
+                                            <input class="form-check-input"
+                                                   type="radio"
+                                                   v-model="state"
+                                                   name="state"
+                                                   id="PENDING"
+                                                   value="PENDING">
+                                            <label class="form-check-label" for="PENDING">
+                                                PENDING
+                                            </label>
+                                        </div>
+                                        <!--//-->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="file"
+                                               @change="onFileSelected"
+                                               name="image" id="image"
+                                               class="form-control">
+                                    </div>
+                                    <div v-if="isSelected !== false">
+                                        <img class="rounded-circle" :src="showImage"
+                                             style="width: 100px; height: 100px">
                                     </div>
                                 </div>
                             </div>
-
-                          <div class="row">
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                  <input type="file">
-                              </div>
-                            </div>
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" v-model="category.status" name="status" id="ACTIVE" value="ACTIVE">
-                                  <label class="form-check-label" for="ACTIVE">
-                                    ACTIVE
-                                  </label>
-                                </div>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" v-model="category.status" name="status" id="INACTIVE" value="INACTIVE">
-                                  <label class="form-check-label" for="INACTIVE">
-                                    INACTIVE
-                                  </label>
-                                </div>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" v-model="category.status" name="status" id="SUSPENDED" value="SUSPENDED">
-                                  <label class="form-check-label" for="SUSPENDED">
-                                    SUSPENDED
-                                  </label>
-                                </div>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" v-model="category.status" name="status" id="PENDING" value="PENDING">
-                                  <label class="form-check-label" for="PENDING">
-                                    PENDING
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="col-md-4">
-                              <div class="form-group">
-                                <input type="file" class="form-control">
-                              </div>
-                            </div>
-                          </div>
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -99,21 +222,35 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
 
     export default {
         middleware: 'checkAuthEmployee',
         name: "ProductCategoryRegister",
-        data () {
+        data() {
             return {
                 id: '',
-                brand_id: '',
+                brandId: '',
                 title: '',
                 description: '',
+                state: '',
+                image: '',
+                isSelected: false,
+                showImage: '',
+                submitStatus: '',
             }
         },
         props: ['category', 'editMode'],
         methods: {
+            onFileSelected(event) {
+                this.image = event.target.files[0];
+                let fileReader = new FileReader();
+                fileReader.readAsDataURL(this.image);
+                fileReader.onload = (e) => {
+                    this.showImage = e.target.result;
+                };
+                this.isSelected = true;
+            },
             categoryCreate() {
                 const isRegister = {
                     brand_id: this.brand_id,
@@ -134,11 +271,11 @@
         },
         computed: {
             ...mapState({
-                brands: state => state.Brands.getBrands,
+                brands: state => state.Brands.allBrands,
             })
         },
         mounted() {
-            return this.$store.dispatch('Brands/getBrands')
+            return this.$store.dispatch('Brands/allBrands')
         }
     }
 </script>

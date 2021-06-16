@@ -1,12 +1,16 @@
 import Axios from 'axios'
 
 const state = () => ({
+    allProductCategories: {},
     isProductCategories: {},
     getProductCategories: {},
     popularProductCategories: {},
 });
 
 const getters = {
+    allProductCategories(state) {
+        return state.allProductCategories
+    },
     isProductCategories(state) {
         return state.isProductCategories
     },
@@ -19,6 +23,26 @@ const getters = {
 };
 
 const actions = {
+    /**
+     *
+     * @param context
+     * @param all
+     * @returns {Promise<void>}
+     */
+    async allProductCategories(context, all = 'all') {
+        await Axios.get(Axios.defaults.baseURL + `panel/product-categories?all=${all}`)
+            .then(res => {
+                const allProductCategories = res.data.data;
+                context.commit('allProductCategories', allProductCategories);
+            }).catch(err => {
+                console.log(err)
+            })
+    },
+
+    /**
+     *
+     * @param context
+     */
     isProductCategories(context) {
         Axios.get(Axios.defaults.baseURL + 'product-categories').then(res => {
             const isProductCategories = res.data.data.product_categories;
@@ -69,6 +93,9 @@ const actions = {
 };
 
 const mutations = {
+    allProductCategories(state, payload) {
+        state.allProductCategories = payload
+    },
     isProductCategories(state, payload) {
         state.isProductCategories = payload
     },

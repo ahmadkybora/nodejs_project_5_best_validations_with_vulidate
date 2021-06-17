@@ -9,4 +9,4 @@ Vue.component('v-panel-navbar', PanelNavbar);
 Vue.component('v-panel-header', PanelHeader);
 Vue.component('v-panel-sidebar', PanelSidebar);
 Vue.component('v-panel-footer', PanelFooter);
-Vue.component('pagination', require('laravel-vue-pagination'));
+//Vue.component('pagination', require('laravel-vue-pagination'));

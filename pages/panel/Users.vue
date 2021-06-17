@@ -4,71 +4,39 @@
         <UserRegister :user="user" :editMode="editMode"></UserRegister>
         <!--//-->
         <div class="row">
+            <!--//-->
             <div class="col-md-12 text-center">
                 <div class="row">
                     <div class="col-md-4">
-                        <h3>Product Register</h3>
+                        <h3>User Register</h3>
                     </div>
                     <div class="col-md-3 offset-5">
                         <button @click="registerUser()" class="btn btn-success">
                             <span><i class="fa fa-user-plus"></i>Register</span>
                         </button>
-                        <button id="close" ref="closeRegister" class="btn btn-danger" @click="closeModal()">close</button>
+                        <button id="close" ref="closeRegister" class="btn btn-danger" @click="closeModal()">close
+                        </button>
                     </div>
                 </div>
             </div>
-            <table class="table table-striped tab-content table-bordered table-responsive">
-                <thead class="text-center">
-                <tr>
-                    <th>#</th>
-                    <th>
-                        <form class="form-inline" @submit.prevent="onFullNameSearch()">
-                            <div class="form-group">
-                                <input type="text" v-model="full_name_search" name="full-name" id="full-name"
-                                       class="form-control" placeholder="Full Name">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="form-control btn btn-sm btn-success"><i
-                                        class="fas fa-search"></i></button>
-                            </div>
-                        </form>
-                    </th>
-                    <th>
-                        <!--<form class="form-inline" @submit.prevent="onUserNameSearch()">
-                            <div class="form-group">
-                                <input type="text" v-model="username_search" name="username" id="username"
-                                       class="form-control" placeholder="User Name">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="form-control btn btn-sm btn-success"><i
-                                        class="fas fa-search"></i></button>
-                            </div>
-                        </form>-->
-                    </th>
-                    <th>
-                        <!--<form class="form-inline" @submit.prevent="onEmailSearch()">
-                            <div class="form-group">
-                                <input type="email" v-model="email_search" name="email" id="email" class="form-control"
-                                       placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="form-control btn btn-sm btn-success"><i
-                                        class="fas fa-search"></i></button>
-                            </div>
-                        </form>-->
-                    </th>
-                    <th>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="INACTIVE">INACTIVE</option>
-                            <option value="SUSPENDED">SUSPENDED</option>
-                            <option value="PENDING">PENDING</option>
-                        </select>
-                    </th>
-                    <th>#</th>
-                    <th>#</th>
-                </tr>
-                </thead>
+            <!--//-->
+            <form @submit.prevent="onFullTextSearch()" class="form-inline w-50 m-auto">
+                <div class="input-group w-100 my-3">
+                    <input type="text"
+                           name="full_text_search"
+                           id="full-text-search"
+                           v-model="full_text_search"
+                           class="form-control"
+                           placeholder="Search...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!--//-->
+            <table class="table table-hover table-light shadow-lg table-striped tab-content table-bordered table-responsive">
                 <thead class="text-center">
                 <tr>
                     <th>#</th>
@@ -82,8 +50,8 @@
                 </tr>
                 </thead>
                 <tbody class="text-center">
-                <tr v-for="(user, index) in users" :key="user.id">
-                    <td>{{ index }}</td>
+                <tr v-for="(user, index) in users.data" :key="user.id">
+                    <td v-if="index > 0">{{ index }}</td>
                     <td>{{ user.first_name + ' ' + user.last_name }}</td>
                     <td v-text="user.username"></td>
                     <td v-text="user.email"></td>
@@ -109,32 +77,7 @@
                         <a @click="userShow(user)" data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-eye text-primary"></i>
                         </a>
-
                         <UserShow :showUser="showUser"></UserShow>
-                        <!-- Modal -->
-                        <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p v-text="showUser.first_name"></p>
-                                        <p v-text="showUser.last_name"></p>
-                                        <p v-text="showUser.username"></p>
-                                        <p v-text="showUser.email"></p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
                         /
                         <a href="#register" @click="userEdit(user)"><i class="fas fa-pen text-success"></i></a>
                         /
@@ -148,15 +91,37 @@
                     <th>Full Name</th>
                     <th>UserName</th>
                     <th>Email</th>
-                    <th>Gender</th>
-                    <th>Icon</th>
+                    <th>Image</th>
                     <th>Status</th>
                     <th>Created At / Updated At</th>
                     <th>Option</th>
                 </tr>
                 </thead>
             </table>
-
+            <!---------pagination----------->
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm">
+                    <li v-if="current_page > 1"
+                        class="page-item">
+                        <a @click.prevent="changePage(current_page - 1)"
+                           disabled="disabled"
+                           class="page-link" href="#" tabindex="-1">
+                            Previous
+                        </a>
+                    </li>
+                    <li v-for="page in pages"
+                        :key="page === current_page"
+                        id="colorBtn"
+                        class="page-item">
+                        <a @click.prevent="changePage(page)" class="page-link" href="#">{{ page }}</a>
+                    </li>
+                    <li v-if="current_page < last_page" class="page-item">
+                        <a @click.prevent="changePage(current_page + 1)" class="page-link"
+                           href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+            <!---------pagination----------->
         </div>
     </div>
 
@@ -166,39 +131,22 @@
     import $ from 'jquery';
     import UserRegister from '../../components/panel/UserRegister';
     import UserShow from '../../components/panel/modal/UserShow';
-    import { UserService } from '../../services/panel/UserService';
+    import {UserService} from '../../services/panel/UserService';
     import HelperFunctions from '../../helpers/HelperFunctions';
 
-    import { mapState } from 'vuex'
+    import {mapState} from 'vuex'
 
     window.$ = $;
     export default {
         middleware: 'checkAuthEmployee',
         layout: 'panel',
         name: "Users",
-        components: { UserRegister, UserShow },
+        components: {UserRegister, UserShow},
         data() {
             return {
-                //editMode: false,
-                token: JSON.parse(window.localStorage.getItem('token')),
-                state_search: '',
-                full_name_search: '',
-                username_search: '',
-                email_search: '',
-                search: '',
-                dialog: '',
+                full_text_search: '',
                 page: 1,
-                employee: {},
-                employees: {},
                 getUsers: {},
-                pagination: {
-                    total: 0,
-                    per_page: 0,
-                    last_page: 0,
-                    from: 0,
-                    to: 0,
-                    current_page: 1
-                },
                 offset: 4,
                 name: '',
                 description: '',
@@ -213,26 +161,41 @@
             }
         },
         mounted() {
-            //return UserService.user;
             return this.$store.dispatch('Users/getUsers');
         },
         computed: {
             ...mapState({
+                per_page: state => state.Users.getUsers.per_page,
+                last_page: state => state.Users.getUsers.last_page,
+                from: state => state.Users.getUsers.from,
+                to: state => state.Users.getUsers.to,
+                current_page: state => state.Users.getUsers.current_page,
+                total: state => state.Users.getUsers.total,
                 users: state => state.Users.getUsers,
                 //showUser: state => state.Users.isUser,
                 editUser: state => state.Users.isUser,
                 //deleteUser: state => state.Users.isUser,
-            })
+            }),
+            pages() {
+                let pagesArray = [];
+                var form = this.current_page - this.offset;
+                if (form < 1) {
+                    form = 1
+                }
+                var to = form + (this.offset * 2);
+                if (to >= this.last_page) {
+                    to = this.last_page;
+                }
+                while (form <= to) {
+                    pagesArray.push(form);
+                    form++;
+                }
+                return pagesArray;
+            },
         },
         methods: {
             closeModal() {
                 HelperFunctions.closeModal();
-            },
-            userAll() {
-                this.getUsers = UserService.userAll()
-            },
-            userPaginate() {
-
             },
             userShow(user) {
                 this.showUser = {
@@ -241,7 +204,6 @@
                     username: user.username,
                     email: user.email,
                 };
-                //return this.$store.dispatch('Users/showUser', {id});
             },
             userEdit(user) {
                 this.editMode = true;
@@ -255,17 +217,9 @@
                 this.user = '';
                 $('#user-register').toggle();
             },
-            onFullNameSearch() {
-                return UserService.onFullNameSearch()
-            },
-            onUserNameSearch() {
-                return UserService.onUserNameSearch();
-            },
-            onEmailSearch() {
-                return UserService.onEmailSearch();
-            },
-            onSearch(search) {
-                return UserService.onSearch(search)
+            onFullTextSearch() {
+                const full_text_search = this.full_text_search;
+                return this.$store.dispatch('Users/searchUser', {full_text_search});
             },
         }
     }

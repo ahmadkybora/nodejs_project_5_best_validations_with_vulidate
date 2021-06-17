@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 const state = () => ({
     allEmployees: {},
     getEmployees: {},
-    isEmployee: {}
+    isEmployee: {},
 });
 
 const getters = {
@@ -12,7 +12,7 @@ const getters = {
         return state.allEmployees
     },
     getEmployees(state) {
-        return state.getEmployees
+        return state.getEmployees;
     },
     isEmployee(state) {
         return state.isEmployee
@@ -51,6 +51,7 @@ const actions = {
                 console.log(err)
             })
     },
+
     showEmployee(context, payload) {
         const employeeId = payload.id;
         const employees = context.state.getEmployees;
@@ -340,6 +341,13 @@ const actions = {
                 }
             })
     },
+
+    /**
+     *
+     * @param context
+     * @param payload
+     * @returns {Promise<void>}
+     */
     async searchEmployee(context, payload) {
         const full_text_search = {
             full_text_search: payload.full_text_search
@@ -352,9 +360,7 @@ const actions = {
                         Swal.fire('Success!', res.data.message, 'success')
                             .then(() => {
                                 const getEmployees = res.data.data;
-                                console.log(getEmployees);
                                 context.commit('getEmployees', getEmployees);
-                                this.$router.push('/panel/employees');
                             });
                         break;
                     case 403:

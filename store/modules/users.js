@@ -20,7 +20,8 @@ const actions = {
     async getUsers(context) {
         await Axios.get(Axios.defaults.baseURL + 'panel/users')
             .then(res => {
-                const getUsers = res.data.data.users;
+                const getUsers = res.data.data;
+                console.log(getUsers);
                 context.commit('getUsers', getUsers);
             }).catch(err => {
                 console.log(err)
@@ -79,7 +80,7 @@ const actions = {
                             .then(() => {
                                 const getUsers = res.data.data;
                                 context.commit('getUsers', getUsers);
-                                this.$router.push('/panel/users');
+                                //this.$router.push('/panel/users');
                             });
                         break;
                     case 403:
@@ -165,6 +166,12 @@ const actions = {
                 console.log(err)
             })
     },
+
+    /**
+     *
+     * @param context
+     * @param payload
+     */
     deleteUser(context, payload) {
         state.isUser = payload.id;
         const id = payload.id;
@@ -177,6 +184,81 @@ const actions = {
             console.log(err)
         })
     },
+
+    /**
+     *
+     * @param context
+     * @param payload
+     * @returns {Promise<void>}
+     */
+    async searchUser(context, payload) {
+        const full_text_search = {
+            full_text_search: payload.full_text_search
+        };
+
+        await Axios.post(Axios.defaults.baseURL + 'panel/users/search', full_text_search)
+            .then(res => {
+                switch (res.status) {
+                    case 200:
+                        Swal.fire('Success!', res.data.message, 'success')
+                            .then(() => {
+                                const getUsers = res.data.data;
+                                context.commit('getUsers', getUsers);
+                            });
+                        break;
+                    case 403:
+                        Swal.fire('Warning!', res.data.message, 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 422:
+                        Swal.fire('Error!', 'whooops', 'error')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 503:
+                        Swal.fire('Danger!', 'Service is Unavailable', 'error');
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            }).catch(err => {
+                switch (err.response.status) {
+                    case 422:
+                        for (let i = 0; i < err.response.data.errors.length; i++) {
+                            Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
+                                .then(() => {
+
+                                });
+                        }
+                        break;
+                    case 404:
+                        Swal.fire('Warning!', '404 Not Found!', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 500:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    case 503:
+                        Swal.fire('Warning!', 'Service is unavailable', 'warning')
+                            .then(() => {
+
+                            });
+                        break;
+                    default:
+                        Swal.fire('Warning!', 'Your Basic Information', 'warning');
+                        break;
+                }
+            })
+    }
 };
 
 const mutations = {

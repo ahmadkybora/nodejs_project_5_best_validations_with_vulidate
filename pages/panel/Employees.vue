@@ -20,22 +20,21 @@
                 </div>
             </div>
             <!--//-->
-            <div>
-                <form class="form-inline" @submit.prevent="onFullTextSearch()">
-                    <div class="form-group">
-                        <input type="text"
-                               v-model="full_text_search"
-                               name="full_text_search"
-                               id="full-text-search"
-                               class="form-control"
-                               placeholder="Full Name">
+            <form @submit.prevent="onFullTextSearch()" class="form-inline w-50 m-auto">
+                <div class="input-group w-100 my-3">
+                    <input type="text"
+                           name="full_text_search"
+                           id="full-text-search"
+                           v-model="full_text_search"
+                           class="form-control"
+                           placeholder="Search...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="form-control btn btn-sm btn-success"><i
-                                class="fas fa-search"></i></button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
             <!--//-->
             <table class="table table-striped tab-content table-bordered table-responsive">
                 <thead class="text-center">
@@ -51,7 +50,7 @@
                 </tr>
                 </thead>
                 <tbody class="text-center">
-                <tr v-for="(employee, index) in employees" :key="employee.id">
+                <tr v-for="(employee, index) in employees.data" :key="employee.id">
                     <td>{{ index }}</td>
                     <td>{{ employee.first_name + ' ' + employee.last_name }}</td>
                     <td v-text="employee.username"></td>
@@ -101,24 +100,23 @@
             </table>
             <!---------pagination----------->
             <nav aria-label="...">
-                <ul class="pagination pagination-sm"
-                    v-if="">
-                    <li v-if="pagination.current_page > 1"
+                <ul class="pagination pagination-sm">
+                    <li v-if="current_page > 1"
                         class="page-item">
-                        <a @click.prevent="changePage(pagination.current_page - 1)"
+                        <a @click.prevent="changePage(current_page - 1)"
                            disabled="disabled"
                            class="page-link" href="#" tabindex="-1">
                             Previous
                         </a>
                     </li>
                     <li v-for="page in pages"
-                        :key="page === pagination.current_page"
+                        :key="page === current_page"
                         id="colorBtn"
                         class="page-item">
                         <a @click.prevent="changePage(page)" class="page-link" href="#">{{ page }}</a>
                     </li>
-                    <li v-if="pagination.current_page < pagination.last_page" class="page-item">
-                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link"
+                    <li v-if="current_page < last_page" class="page-item">
+                        <a @click.prevent="changePage(current_page + 1)" class="page-link"
                            href="#">Next</a>
                     </li>
                 </ul>
@@ -133,10 +131,8 @@
     import $ from 'jquery';
     import EmployeeRegister from '../../components/panel/EmployeeRegister';
     import EmployeeShow from '../../components/panel/modal/EmployeeShow';
-    import {EmployeeService} from '../../services/panel/EmployeeService';
     import {mapState} from 'vuex'
     import HelperFunctions from '../../helpers/HelperFunctions';
-    import Axios from 'axios';
 
     window.$ = $;
     export default {
@@ -146,29 +142,12 @@
         components: {EmployeeRegister, EmployeeShow},
         data() {
             return {
-                token: window.localStorage.getItem('token-employee'),
-                state_search: '',
                 full_text_search: '',
-                username_search: '',
-                email_search: '',
-                search: '',
-                dialog: '',
                 page: 1,
-                pagination: {
-                    total: 0,
-                    per_page: 0,
-                    last_page: 0,
-                    from: 0,
-                    to: 0,
-                    current_page: 1
-                },
                 offset: 4,
-                blue: 'text-primary',
                 name: '',
                 description: '',
                 employee: '',
-                employees: {},
-                employeeData: [],
                 editMode: false,
                 showEmployee: {
                     first_name: '',
@@ -179,34 +158,27 @@
             }
         },
         mounted() {
-            this.getEmployees();
             return this.$store.dispatch('Employees/getEmployees');
         },
         computed: {
             ...mapState({
-                getPro: {
-                    get() {
-                        return state => state.Employees.getEmployees
-                    },
-                    set: function (getPro) {
-                        this.employees = getPro.data;
-                        this.pagination = getPro.getEmployees;
-                    },
-                },
-                //employees: state => state.Employees.getEmployees,
-                showUser: state => state.Users.isUser,
-                editUser: state => state.Users.isUser,
-                //deleteUser: state => state.Users.isUser,
+                employees: state => state.Employees.getEmployees,
+                per_page: state => state.Employees.getEmployees.per_page,
+                last_page: state => state.Employees.getEmployees.last_page,
+                from: state => state.Employees.getEmployees.from,
+                to: state => state.Employees.getEmployees.to,
+                current_page: state => state.Employees.getEmployees.current_page,
+                total: state => state.Employees.getEmployees.total,
             }),
             pages() {
                 let pagesArray = [];
-                var form = this.pagination.current_page - this.offset;
+                var form = this.current_page - this.offset;
                 if (form < 1) {
                     form = 1
                 }
                 var to = form + (this.offset * 2);
-                if (to >= this.pagination.last_page) {
-                    to = this.pagination.last_page;
+                if (to >= this.last_page) {
+                    to = this.last_page;
                 }
                 while (form <= to) {
                     pagesArray.push(form);
@@ -217,52 +189,11 @@
         },
         methods: {
             changePage(page) {
-                this.pagination.current_page = page;
-                /*if (this.pagination.current_page === page) {
-                    $('#colorBtn').addClass('active');
-                }else{
-                    $('nav.ul li.active').removeClass('active');
-                }*/
-                this.getEmployees(page);
-            },
-            getEmployees(page = 1) {
-                Axios.get(Axios.defaults.baseURL + `panel/employees?page= ${page}`, {
-                    headers: {
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                })
-                    .then((res) => {
-                        this.pagination.per_page = res.data.data.per_page;
-                        this.pagination.last_page = res.data.data.last_page;
-                        this.pagination.from = res.data.data.from;
-                        this.pagination.to = res.data.data.to;
-                        this.pagination.current_page = res.data.data.current_page;
-                        this.pagination.total = res.data.data.total;
-                        this.employees = res.data.data.data;
-                    })
-                    .catch(() => {
-                        console.log('handle server error from here');
-                    });
+                this.current_page = page;
+                return this.$store.dispatch('Employees/getEmployees', page);
             },
             closeModal() {
                 HelperFunctions.closeModal();
-            },
-            employeeAll() {
-                this.getUsers = EmployeeService.EmployeeAll()
-            },
-            employeePaginate() {
-                axios.get(axios.defaults.baseURL + 'panel/employee', {
-                    headers: {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.token,
-                            'Content_Type': 'application/json'
-                        }
-                    }
-                })
-                    .then(res => {
-                        this.employeeData = res.data;
-                        console.log(this.employeeData);
-                    });
             },
             employeeShow(employee) {
                 this.showEmployee = {
@@ -287,15 +218,6 @@
             onFullTextSearch() {
                 const full_text_search = this.full_text_search;
                 return this.$store.dispatch('Employees/searchEmployee', {full_text_search});
-            },
-            onUserNameSearch() {
-                return EmployeeService.onUserNameSearch();
-            },
-            onEmailSearch() {
-                return EmployeeService.onEmailSearch();
-            },
-            onSearch(search) {
-                return EmployeeService.onSearch(search)
             },
         }
     }

@@ -3,12 +3,12 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="jumbotron">
+                    <div class="jumbotron shadow-lg">
                         <h3 v-if="!editMode">Register Users</h3>
                         <h3 v-if="editMode">Update Users</h3>
                         <form @submit.prevent="editMode ? userUpdate(user) : userCreate()">
 
-                            <div v-if="editMode">
+                            <div class="my-3" v-if="editMode">
                                 <!--//-->
                                 <div class="error alert-danger" v-if="!$v.user.first_name.required">First Name is
                                     required.
@@ -168,7 +168,7 @@
                                 </div>
                                 <!--//-->
                             </div>
-                            <div v-else>
+                            <div class="my-3" v-else>
                                 <!--//-->
                                 <div class="error alert-danger" v-if="!$v.first_name.required">First Name is required.
                                 </div>

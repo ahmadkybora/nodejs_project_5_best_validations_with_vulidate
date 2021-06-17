@@ -9,7 +9,7 @@
 
                         <form @submit.prevent="editMode ? employeeUpdate(employee) : createEmployee()">
 
-                            <div v-if="editMode">
+                            <div class="my-3" v-if="editMode">
                                 <!--//-->
                                 <div class="error alert-danger" v-if="!$v.employee.first_name.required">First Name is
                                     required.
@@ -168,7 +168,7 @@
                                 </div>
                                 <!--//-->
                             </div>
-                            <div v-else>
+                            <div class="my-3" v-else>
                                 <!--//-->
                                 <div class="error alert-danger" v-if="!$v.first_name.required">First Name is required.
                                 </div>

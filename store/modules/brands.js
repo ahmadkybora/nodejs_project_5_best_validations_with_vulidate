@@ -8,6 +8,7 @@ const state = () => ({
     isBrands: {},
     getBrands: {},
     popularBrands: {},
+    //current_page: {},
 });
 
 const getters = {
@@ -51,10 +52,11 @@ const actions = {
             })
     },
 
-    async getBrands(context) {
-        await Axios.get(Axios.defaults.baseURL + 'panel/brands')
+    async getBrands(context, page = 1) {
+        await Axios.get(Axios.defaults.baseURL + `panel/brands?page=${page}`)
             .then(res => {
                 const getBrands = res.data.data;
+                console.log(getBrands);
                 context.commit('getBrands', getBrands)
             }).catch(err => {
                 console.log(err)

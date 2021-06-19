@@ -17,11 +17,10 @@ const getters = {
 
 const actions = {
 
-    async getUsers(context) {
-        await Axios.get(Axios.defaults.baseURL + 'panel/users')
+    async getUsers(context, page = 1) {
+        await Axios.get(Axios.defaults.baseURL + `panel/users?page=${page}`)
             .then(res => {
                 const getUsers = res.data.data;
-                console.log(getUsers);
                 context.commit('getUsers', getUsers);
             }).catch(err => {
                 console.log(err)

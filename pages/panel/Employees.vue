@@ -110,7 +110,6 @@
                         </a>
                     </li>
                     <li v-for="page in pages"
-                        :key="page === current_page"
                         id="colorBtn"
                         class="page-item">
                         <a @click.prevent="changePage(page)" class="page-link" href="#">{{ page }}</a>
@@ -121,6 +120,7 @@
                     </li>
                 </ul>
             </nav>
+            <!--:key="page === current_page"-->
             <!---------pagination----------->
         </div>
     </div>
@@ -189,7 +189,7 @@
         },
         methods: {
             changePage(page) {
-                this.current_page = page;
+                //this.current_page = page;
                 return this.$store.dispatch('Employees/getEmployees', page);
             },
             closeModal() {

@@ -50,8 +50,8 @@
                 </tr>
                 </thead>
                 <tbody class="text-center">
-                <tr v-for="(user, index) in users.data" :key="user.id">
-                    <td v-if="index > 0">{{ index }}</td>
+                <tr v-for="(user, index) in users" :key="user.id">
+                    <td>{{ index }}</td>
                     <td>{{ user.first_name + ' ' + user.last_name }}</td>
                     <td v-text="user.username"></td>
                     <td v-text="user.email"></td>
@@ -110,7 +110,6 @@
                         </a>
                     </li>
                     <li v-for="page in pages"
-                        :key="page === current_page"
                         id="colorBtn"
                         class="page-item">
                         <a @click.prevent="changePage(page)" class="page-link" href="#">{{ page }}</a>
@@ -121,6 +120,7 @@
                     </li>
                 </ul>
             </nav>
+            <!--:key="page === current_page"-->
             <!---------pagination----------->
         </div>
     </div>
@@ -131,7 +131,6 @@
     import $ from 'jquery';
     import UserRegister from '../../components/panel/UserRegister';
     import UserShow from '../../components/panel/modal/UserShow';
-    import {UserService} from '../../services/panel/UserService';
     import HelperFunctions from '../../helpers/HelperFunctions';
 
     import {mapState} from 'vuex'
@@ -171,7 +170,7 @@
                 to: state => state.Users.getUsers.to,
                 current_page: state => state.Users.getUsers.current_page,
                 total: state => state.Users.getUsers.total,
-                users: state => state.Users.getUsers,
+                users: state => state.Users.getUsers.data,
                 //showUser: state => state.Users.isUser,
                 editUser: state => state.Users.isUser,
                 //deleteUser: state => state.Users.isUser,
@@ -194,6 +193,10 @@
             },
         },
         methods: {
+            changePage(page) {
+                //this.current_page = page;
+                return this.$store.dispatch('Users/getUsers', page);
+            },
             closeModal() {
                 HelperFunctions.closeModal();
             },

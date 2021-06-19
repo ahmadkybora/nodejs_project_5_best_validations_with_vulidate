@@ -11,18 +11,25 @@
 
                             <div class="my-3" v-if="editMode">
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.employee.first_name.required">First Name is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.employee.first_name.minLength">Last Name must
-                                    have at
-                                    least
-                                    {{ $v.employee.first_name.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.employee.first_name.maxLength">First Name must
-                                    have at
-                                    least
-                                    {{ $v.employee.first_name.$params.maxLength.max }} letters.
+                                {{ console.log($v.employee.first_name.$error) }}
+                                <div v-if="$v.employee.first_name.$error">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.employee.first_name.required">
+                                        First Name is required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.employee.first_name.minLength">
+                                        Last Name must
+                                        have at
+                                        least
+                                        {{ $v.employee.first_name.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.employee.first_name.maxLength">First Name
+                                        must
+                                        have at
+                                        least
+                                        {{ $v.employee.first_name.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
                                 <div class="error alert-danger" v-if="!$v.employee.last_name.required">Last Name is
@@ -130,7 +137,8 @@
                                     {{ $v.employee.confirmation_password.$params.maxLength.max }} letters.
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.employee.home_address.required">Home Address is
+                                <div class="error alert-danger" v-if="!$v.employee.home_address.required">Home Address
+                                    is
                                     required.
                                 </div>
                                 <div class="error alert-danger" v-if="!$v.employee.home_address.minLength">Home Address
@@ -145,7 +153,8 @@
                                     {{ $v.employee.home_address.$params.maxLength.max }} letters.
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.employee.work_address.required">Work Address is
+                                <div class="error alert-danger" v-if="!$v.employee.work_address.required">Work Address
+                                    is
                                     required.
                                 </div>
                                 <div class="error alert-danger" v-if="!$v.employee.work_address.minLength">Work Address
@@ -170,9 +179,11 @@
                             </div>
                             <div class="my-3" v-else>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.first_name.required">First Name is required.
+                                <div class="error alert-danger"
+                                     v-if="!$v.first_name.required">First Name is required.
                                 </div>
-                                <div class="error alert-danger" v-if="!$v.first_name.minLength">First Name must have at
+                                <div class="error alert-danger"
+                                     v-if="!$v.first_name.minLength">First Name must have at
                                     least
                                     {{ $v.first_name.$params.minLength.min }} letters.
                                 </div>
@@ -251,15 +262,18 @@
                                     {{ $v.password.$params.maxLength.max }} letters.
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.required">Password Confirmation is
+                                <div class="error alert-danger" v-if="!$v.confirmation_password.required">Password
+                                    Confirmation is
                                     required.
                                 </div>
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.minLength">Password Confirmation
+                                <div class="error alert-danger" v-if="!$v.confirmation_password.minLength">Password
+                                    Confirmation
                                     must have at
                                     least
                                     {{ $v.confirmation_password.$params.minLength.min }} letters.
                                 </div>
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.maxLength">Password Confirmation
+                                <div class="error alert-danger" v-if="!$v.confirmation_password.maxLength">Password
+                                    Confirmation
                                     must have at
                                     least
                                     {{ $v.confirmation_password.$params.maxLength.max }} letters.
@@ -268,7 +282,8 @@
                                 <div class="error alert-danger" v-if="!$v.home_address.required">Home Address is
                                     required.
                                 </div>
-                                <div class="error alert-danger" v-if="!$v.home_address.minLength">Home Address must have at
+                                <div class="error alert-danger" v-if="!$v.home_address.minLength">Home Address must have
+                                    at
                                     least
                                     {{ $v.home_address.$params.minLength.min }} letters.
                                 </div>
@@ -281,7 +296,8 @@
                                 <div class="error alert-danger" v-if="!$v.work_address.required">Work Address is
                                     required.
                                 </div>
-                                <div class="error alert-danger" v-if="!$v.work_address.minLength">Work Address must have at
+                                <div class="error alert-danger" v-if="!$v.work_address.minLength">Work Address must have
+                                    at
                                     least
                                     {{ $v.work_address.$params.minLength.min }} letters.
                                 </div>
@@ -305,8 +321,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group" v-if="editMode">
                                         <input type="text"
-                                               :class="{ 'form-group--error': $v.first_name.$error }"
+                                               :class="{ 'form-group--error': $v.employee.first_name.$error }"
                                                v-model.trim="$v.employee.first_name.$model"
+                                               :status="$v.message.$error ? 'error' : null"
+                                               @blur="$v.message.$touch()"
                                                name="first_name"
                                                id="first-name"
                                                class="form-control" placeholder="First Name">
@@ -628,6 +646,11 @@
 </template>
 
 <script>
+    import Vue from 'vue'
+    import Vuelidate from 'vuelidate'
+
+    Vue.use(Vuelidate);
+
     import {
         required,
         minLength,
@@ -724,7 +747,8 @@
             first_name: {
                 required,
                 minLength: minLength(2),
-                maxLength: maxLength(25)
+                maxLength: maxLength(25),
+                $invalid: true
             },
             last_name: {
                 required,
@@ -783,6 +807,9 @@
             },
         },
         props: ['employee', 'editMode'],
+        mounted() {
+            console.log(this.$v.first_name.$touch);
+        },
         methods: {
             onFileSelected(event) {
                 this.image = event.target.files[0];

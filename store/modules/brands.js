@@ -29,12 +29,10 @@ const getters = {
 const actions = {
 
     async allBrands(context, all = 'all') {
-        await Axios.get(Axios.defaults.baseURL + `brands?all=${all}`)
+        await Axios.get(Axios.defaults.baseURL + `panel/brands?all=${all}`)
             .then(res => {
                 const allBrands = res.data.data;
-                //const popularBrands = res.data.data.popular_brands;
                 context.commit('allBrands', allBrands);
-                //context.commit('popularBrands', popularBrands)
             }).catch(err => {
                 console.log(err)
             })

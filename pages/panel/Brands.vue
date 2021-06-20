@@ -223,7 +223,7 @@
             },
             onFullTextSearch() {
                 const full_text_search = this.full_text_search;
-                return this.$store.dispatch('Users/searchUser', {full_text_search});
+                return this.$store.dispatch('Brands/searchBrand', {full_text_search});
             },
         }
     }

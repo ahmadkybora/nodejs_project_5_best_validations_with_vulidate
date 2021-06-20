@@ -1,17 +1,21 @@
 <template>
-    <div class="container">
-        <form @submit.prevent="onSearch()">
-            <div class="input-group">
-                <input type="text" v-model="search" name="search" id="search"
-                       class="form-control" placeholder="Please search....">
-                <div class="input-group-btn">
-                    <button class="btn btn-success" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
+    <!--//-->
+    <form @submit.prevent="onFullTextSearch()" class="form-inline w-50 m-auto">
+        <div class="input-group w-100 my-3">
+            <input type="text"
+                   name="full_text_search"
+                   id="full-text-search"
+                   v-model="full_text_search"
+                   class="form-control"
+                   placeholder="Search...">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+    <!--//-->
 </template>
 
 <script>
@@ -20,7 +24,7 @@
         name: "ProductSearch",
         data() {
             return {
-                search: ''
+                full_text_search: ''
             }
         },
         methods: {

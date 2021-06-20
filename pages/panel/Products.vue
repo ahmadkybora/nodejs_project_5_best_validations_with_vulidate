@@ -18,8 +18,25 @@
                     </div>
                 </div>
             </div>
+            <!--//-->
+            <form @submit.prevent="onFullTextSearch()" class="form-inline w-50 m-auto">
+                <div class="input-group w-100 my-3">
+                    <input type="text"
+                           name="full_text_search"
+                           id="full-text-search"
+                           v-model="full_text_search"
+                           class="form-control"
+                           placeholder="Search...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!--//-->
             <!------------------------//------------------------>
-            <ProductSearch></ProductSearch>
+            <!--<ProductSearch></ProductSearch>-->
             <!------------------------//------------------------>
             <table class="table table-striped tab-content table-bordered table-responsive">
                 <thead class="text-center">
@@ -59,7 +76,7 @@
                                 v-text="product.status">PENDING
                         </button>
                     </td>
-                    <td>{{ product.created_at + ' ' + product.updated_at }}</td>
+                    <td>{{ product.createdAt + ' ' + product.updatedAt }}</td>
                     <td>
                         <a @click="productShow(product)" data-toggle="modal" data-target="#exampleModal">
                             <i class="fas fa-eye text-primary"></i>
@@ -90,38 +107,27 @@
             <!---------pagination----------->
             <nav aria-label="...">
                 <ul class="pagination pagination-sm">
-                    <li v-if="pagination.current_page > 1" :disabled="pagination.current_page <= 1"
+                    <li v-if="current_page > 1"
                         class="page-item">
-                        <a @click.prevent="changePage(pagination.current_page - 1)"
+                        <a @click.prevent="changePage(current_page - 1)"
                            disabled="disabled"
                            class="page-link" href="#" tabindex="-1">
                             Previous
                         </a>
                     </li>
-                    <li v-for="page in pages" :key="page === pagination.current_page" class="page-item">
-                        <a @click.prevent="changePage(page)" class="page-link btn btn-primary" href="#">{{ page }}</a>
+                    <li v-for="page in pages"
+                        id="colorBtn"
+                        class="page-item">
+                        <a @click.prevent="changePage(page)" class="page-link" href="#">{{ page }}</a>
                     </li>
-                    <li v-if="pagination.current_page < pagination.last_page" class="page-item">
-                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link"
+                    <li v-if="current_page < last_page" class="page-item">
+                        <a @click.prevent="changePage(current_page + 1)" class="page-link"
                            href="#">Next</a>
                     </li>
                 </ul>
             </nav>
+            <!--:key="page === current_page"-->
             <!---------pagination----------->
-            <!--<nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>-->
-            <!--<paginate
-                    :pageCount="10"
-                    :containerClass="'pagination'"
-                    :clickHandler="clickCallback">
-            </paginate>-->
         </div>
     </div>
 
@@ -148,24 +154,8 @@
         components: {ProductRegister, ProductShow, ProductSearch},
         data() {
             return {
-                token: window.localStorage.getItem('token-employee'),
-                state_search: '',
-                full_name_search: '',
-                username_search: '',
-                email_search: '',
-                search: '',
-                dialog: '',
+                full_text_search: '',
                 page: 10,
-                employee: {},
-                products: {},
-                pagination: {
-                    total: 0,
-                    per_page: 0,
-                    last_page: 0,
-                    from: 0,
-                    to: 0,
-                    current_page: 1
-                },
                 offset: 4,
                 name: '',
                 description: '',
@@ -177,36 +167,30 @@
                     price: '',
                     description: ''
                 },
-                productSearch: {}
             }
         },
         mounted() {
-            this.getProducts();
             return this.$store.dispatch('Products/getProducts');
         },
         computed: {
-            // this is set and get computed products
             ...mapState({
-                getPro: {
-                    get () {
-                        return state => state.Products.getProducts
-                    },
-                    set: function (getPro) {
-                        this.products = getPro.data;
-                        this.pagination = getPro.getProducts
-                    },
-                },
-                //products: state => state.Products.getProducts,
+                per_page: state => state.Products.getProducts.per_page,
+                last_page: state => state.Products.getProducts.last_page,
+                from: state => state.Products.getProducts.from,
+                to: state => state.Products.getProducts.to,
+                current_page: state => state.Products.getProducts.current_page,
+                total: state => state.Products.getProducts.total,
+                products: state => state.Products.getProducts.data,
             }),
             pages() {
                 let pagesArray = [];
-                var form = this.pagination.current_page - this.offset;
+                var form = this.current_page - this.offset;
                 if (form < 1) {
                     form = 1
                 }
                 var to = form + (this.offset * 2);
-                if (to >= this.pagination.last_page) {
-                    to = this.pagination.last_page;
+                if (to >= this.last_page) {
+                    to = this.last_page;
                 }
                 while (form <= to) {
                     pagesArray.push(form);
@@ -225,40 +209,11 @@
         },*/
         methods: {
             changePage(page) {
-                this.pagination.current_page = page;
-                this.getProducts(page);
+                return this.$store.dispatch('Products/getProducts', page);
             },
-            getProducts(page = 1) {
-                this.$http.get(this.$http.defaults.baseURL + `panel/product?page= ${page}`, {
-                    headers: {
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                })
-                    .then((res) => {
-                        this.pagination.per_page = res.data.data.per_page;
-                        this.pagination.last_page = res.data.data.last_page;
-                        this.pagination.from = res.data.data.from;
-                        this.pagination.to = res.data.data.to;
-                        this.pagination.current_page = res.data.data.current_page;
-                        this.pagination.total = res.data.data.total;
-                        this.products = res.data.data.data;
-                    })
-                    .catch(() => {
-                        console.log('handle server error from here');
-                    });
-            },
-            /*clickCallback(page) {
-                console.log(page)
-            },*/
             closeModal() {
                 HelperFunctions.closeModal();
                 this.product = '';
-            },
-            userAll() {
-                this.getUsers = ProductService.userAll()
-            },
-            userPaginate() {
-
             },
             productShow(product) {
                 this.showProduct = {
@@ -281,17 +236,9 @@
                 this.product = '';
                 $('#product-register').toggle();
             },
-            onFullNameSearch() {
-                return ProductService.onFullNameSearch()
-            },
-            onUserNameSearch() {
-                return ProductService.onUserNameSearch();
-            },
-            onEmailSearch() {
-                return ProductService.onEmailSearch();
-            },
-            onSearch(search) {
-                return ProductService.onSearch(search)
+            onFullTextSearch() {
+                const full_text_search = this.full_text_search;
+                return this.$store.dispatch('Products/searchProduct', {full_text_search});
             },
         }
     }

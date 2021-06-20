@@ -217,17 +217,9 @@
         this.category = '';
         $('#user-register').toggle();
       },
-      onFullNameSearch() {
-        return ProductCategoryService.onFullNameSearch()
-      },
-      onUserNameSearch() {
-        return ProductCategoryService.onUserNameSearch();
-      },
-      onEmailSearch() {
-        return ProductCategoryService.onEmailSearch();
-      },
-      onSearch(search) {
-        return ProductCategoryService.onSearch(search)
+      onFullTextSearch() {
+        const full_text_search = this.full_text_search;
+        return this.$store.dispatch('Products/searchProduct', {full_text_search});
       },
     }
   }

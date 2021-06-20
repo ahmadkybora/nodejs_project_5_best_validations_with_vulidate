@@ -7,9 +7,8 @@
                         <h3 v-if="!editMode">Register Products</h3>
                         <h3 v-if="editMode">Update Products</h3>
                         <form enctype="multipart/form-data" id="formData"
-                              @submit.prevent="editMode ? productUpdate(product) : productCreate()"
-                              @keydown="form.onKeydown($event)">
-
+                              @submit.prevent="editMode ? productUpdate(product) : productCreate()">
+<!--//-->
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -465,13 +464,12 @@
         },
         computed: {
             ...mapState({
-                categories: state => state.ProductCategories.getProductCategories,
+                categories: state => state.ProductCategories.allProductCategories,
                 //files: state => state.Products.isFile
             })
         },
         mounted() {
-            console.log(this.icon);
-            return this.$store.dispatch('ProductCategories/getProductCategories')
+            return this.$store.dispatch('ProductCategories/allProductCategories')
         }
     }
 </script>

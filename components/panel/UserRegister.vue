@@ -7,305 +7,389 @@
                         <h3 v-if="!editMode">Register Users</h3>
                         <h3 v-if="editMode">Update Users</h3>
                         <form @submit.prevent="editMode ? userUpdate(user) : userCreate()">
-
+                            <!---------------------validation------------------->
                             <div class="my-3" v-if="editMode">
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.first_name.required">First Name is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.first_name.minLength">Last Name must
-                                    have at
-                                    least
-                                    {{ $v.user.first_name.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.first_name.maxLength">First Name must
-                                    have at
-                                    least
-                                    {{ $v.user.first_name.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.last_name.required">Last Name is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.last_name.minLength">Last Name must
-                                    have at
-                                    least
-                                    {{ $v.user.last_name.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.last_name.maxLength">First Name must
-                                    have at
-                                    least
-                                    {{ $v.user.last_name.$params.maxLength.max }} letters.
+                                <div v-if="$v.first_name.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.first_name.required">First Name is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.first_name.minLength">Last Name must
+                                        have at
+                                        least
+                                        {{ $v.user.first_name.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.first_name.maxLength">First Name must
+                                        have at
+                                        least
+                                        {{ $v.user.first_name.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.username.required">Username is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.username.minLength">Username must
-                                    have at
-                                    least
-                                    {{ $v.user.username.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.username.maxLength">Username must
-                                    have at
-                                    least
-                                    {{ $v.user.username.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.email.required">Email is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.email.email">Email is invalid.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.mobile.required">Mobile is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.mobile.minLength">Mobile must have
-                                    at least
-                                    {{ $v.user.mobile.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.mobile.maxLength">Mobile must
-                                    have at
-                                    least
-                                    {{ $v.user.mobile.$params.maxLength.max }} letters.
+                                <div v-if="$v.last_name.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.last_name.required">Last Name is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.last_name.minLength">Last Name must
+                                        have at
+                                        least
+                                        {{ $v.user.last_name.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.last_name.maxLength">First Name must
+                                        have at
+                                        least
+                                        {{ $v.user.last_name.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.home_phone.required">Home Phone is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.home_phone.minLength">Home Phone must
-                                    have at
-                                    least
-                                    {{ $v.user.home_phone.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.home_phone.maxLength">Home Phone must
-                                    have at
-                                    least
-                                    {{ $v.user.home_phone.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.zip_code.required">Zip Code is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.zip_code.minLength">Zip Code must
-                                    have at
-                                    least
-                                    {{ $v.user.zip_code.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.zip_code.maxLength">Zip Code must
-                                    have at
-                                    least
-                                    {{ $v.user.zip_code.$params.maxLength.max }} letters.
+                                <div v-if="$v.username.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.username.required">Username is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.username.minLength">Username must
+                                        have at
+                                        least
+                                        {{ $v.user.username.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.username.maxLength">Username must
+                                        have at
+                                        least
+                                        {{ $v.user.username.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.password.required">Password is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.password.minLength">Password must
-                                    have at
-                                    least
-                                    {{ $v.user.password.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.password.maxLength">Password must
-                                    have at
-                                    least
-                                    {{ $v.user.password.$params.maxLength.max }} letters.
+                                <div v-if="$v.email.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.email.required">Email is required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.email.email">Email is invalid.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.confirmation_password.required">
-                                    Password Confirmation is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.confirmation_password.minLength">Last
-                                    Password Confirmation
-                                    must have at
-                                    least
-                                    {{ $v.user.confirmation_password.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.confirmation_password.maxLength">
-                                    Password Confirmation
-                                    must have at
-                                    least
-                                    {{ $v.user.confirmation_password.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.home_address.required">Home Address is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.home_address.minLength">Home Address
-                                    must have at
-                                    least
-                                    {{ $v.user.home_address.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.home_address.maxLength">Home Address
-                                    must have
-                                    at
-                                    least
-                                    {{ $v.user.home_address.$params.maxLength.max }} letters.
+                                <div v-if="$v.mobile.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.mobile.required">Mobile is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.mobile.minLength">Mobile must have
+                                        at least
+                                        {{ $v.user.mobile.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.mobile.maxLength">Mobile must
+                                        have at
+                                        least
+                                        {{ $v.user.mobile.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.work_address.required">Work Address is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.work_address.minLength">Work Address
-                                    must have at
-                                    least
-                                    {{ $v.user.work_address.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.user.work_address.maxLength">Work Address must
-                                    have
-                                    at
-                                    least
-                                    {{ $v.user.work_address.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.state.required">Status is
-                                    required.
+                                <div v-if="$v.home_phone.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.home_phone.required">Home Phone is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.home_phone.minLength">Home Phone must
+                                        have at
+                                        least
+                                        {{ $v.user.home_phone.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.home_phone.maxLength">Home Phone must
+                                        have at
+                                        least
+                                        {{ $v.user.home_phone.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.user.image.required">Image is
-                                    required.
+                                <div v-if="$v.zip_code.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.zip_code.required">Zip Code is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.zip_code.minLength">Zip Code must
+                                        have at
+                                        least
+                                        {{ $v.user.zip_code.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.zip_code.maxLength">Zip Code must
+                                        have at
+                                        least
+                                        {{ $v.user.zip_code.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.password.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.password.required">Password is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.password.minLength">Password must
+                                        have at
+                                        least
+                                        {{ $v.user.password.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.password.maxLength">Password must
+                                        have at
+                                        least
+                                        {{ $v.user.password.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.confirmation_password.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.confirmation_password.required">
+                                        Password Confirmation is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.confirmation_password.minLength">Last
+                                        Password Confirmation
+                                        must have at
+                                        least
+                                        {{ $v.user.confirmation_password.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.confirmation_password.maxLength">
+                                        Password Confirmation
+                                        must have at
+                                        least
+                                        {{ $v.user.confirmation_password.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.home_address.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.home_address.required">Home Address
+                                        is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.home_address.minLength">Home Address
+                                        must have at
+                                        least
+                                        {{ $v.user.home_address.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.user.home_address.maxLength">Home Address
+                                        must have
+                                        at
+                                        least
+                                        {{ $v.user.home_address.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.work_address.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.work_address.required">Work Address is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.work_address.minLength">Work Address
+                                        must have at
+                                        least
+                                        {{ $v.user.work_address.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.work_address.maxLength">Work Address must
+                                        have
+                                        at
+                                        least
+                                        {{ $v.user.work_address.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.state.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.user.state.required">Status is
+                                        required.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.image.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.user.image.required">Image is
+                                        required.
+                                    </div>
                                 </div>
                                 <!--//-->
                             </div>
                             <div class="my-3" v-else>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.first_name.required">First Name is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.first_name.minLength">First Name must have at
-                                    least
-                                    {{ $v.first_name.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.first_name.maxLength">First Name must have at
-                                    least
-                                    {{ $v.first_name.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.last_name.required">Last Name is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.last_name.minLength">Last Name must have at
-                                    least
-                                    {{ $v.last_name.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.last_name.maxLength">Last Name must have at
-                                    least
-                                    {{ $v.last_name.$params.maxLength.max }} letters.
+                                <div v-if="$v.first_name.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.first_name.required">First Name is required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.first_name.minLength">First Name must have at
+                                        least
+                                        {{ $v.first_name.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.first_name.maxLength">First Name must have
+                                        at
+                                        least
+                                        {{ $v.first_name.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.username.required">Username is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.username.minLength">Username must have at
-                                    least
-                                    {{ $v.username.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.username.maxLength">Username must have at
-                                    least
-                                    {{ $v.username.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.email.required">Email is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.email.email">Email is invalid.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.mobile.required">Mobile is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.mobile.minLength">Mobile must have at least
-                                    {{ $v.mobile.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.mobile.maxLength">Mobile must have at
-                                    least
-                                    {{ $v.mobile.$params.maxLength.max }} letters.
+                                <div v-if="$v.last_name.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.last_name.required">Last Name is required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.last_name.minLength">Last Name must have
+                                        at
+                                        least
+                                        {{ $v.last_name.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.last_name.maxLength">Last Name must have
+                                        at
+                                        least
+                                        {{ $v.last_name.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.home_phone.required">Home Phone is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.home_phone.minLength">Home Phone must have at
-                                    least
-                                    {{ $v.home_phone.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.home_phone.maxLength">Home Phone must have at
-                                    least
-                                    {{ $v.home_phone.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.zip_code.required">Zip code is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.zip_code.minLength">Zip code must have at
-                                    least
-                                    {{ $v.zip_code.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.zip_code.maxLength">Zip code must have at
-                                    least
-                                    {{ $v.zip_code.$params.maxLength.max }} letters.
+                                <div v-if="$v.username.$anyDirty">
+                                    <div class="error alert-danger"
+                                         v-if="!$v.username.required">Username is required.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.username.minLength">Username must have at
+                                        least
+                                        {{ $v.username.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger"
+                                         v-if="!$v.username.maxLength">Username must have at
+                                        least
+                                        {{ $v.username.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.password.required">Password is required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.password.minLength">Password must have at
-                                    least
-                                    {{ $v.password.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.password.maxLength">Password must have at
-                                    least
-                                    {{ $v.password.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.required">Password
-                                    Confirmation is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.minLength">Password
-                                    Confirmation
-                                    must have at
-                                    least
-                                    {{ $v.confirmation_password.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.confirmation_password.maxLength">Password
-                                    Confirmation
-                                    must have at
-                                    least
-                                    {{ $v.confirmation_password.$params.maxLength.max }} letters.
+                                <div v-if="$v.email.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.email.required">Email is required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.email.email">Email is invalid.
+                                    </div>
+                                    <!--//-->
+                                    <div class="error alert-danger" v-if="!$v.mobile.required">Mobile is required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.mobile.minLength">Mobile must have at
+                                        least
+                                        {{ $v.mobile.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.mobile.maxLength">Mobile must have at
+                                        least
+                                        {{ $v.mobile.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.home_address.required">Home Address is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.home_address.minLength">Home Address must have
-                                    at
-                                    least
-                                    {{ $v.home_address.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.home_address.maxLength">Home Address must have
-                                    at
-                                    least
-                                    {{ $v.home_address.$params.maxLength.max }} letters.
-                                </div>
-                                <!--//-->
-                                <div class="error alert-danger" v-if="!$v.work_address.required">Work Address is
-                                    required.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.work_address.minLength">Work Address must have
-                                    at
-                                    least
-                                    {{ $v.work_address.$params.minLength.min }} letters.
-                                </div>
-                                <div class="error alert-danger" v-if="!$v.work_address.maxLength">Work Address must have
-                                    at
-                                    least
-                                    {{ $v.work_address.$params.maxLength.max }} letters.
+                                <div v-if="$v.home_phone.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.home_phone.required">Home Phone is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.home_phone.minLength">Home Phone must have
+                                        at
+                                        least
+                                        {{ $v.home_phone.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.home_phone.maxLength">Home Phone must have
+                                        at
+                                        least
+                                        {{ $v.home_phone.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.state.required">Status is
-                                    required.
+                                <div v-if="$v.zip_code.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.zip_code.required">Zip code is required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.zip_code.minLength">Zip code must have at
+                                        least
+                                        {{ $v.zip_code.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.zip_code.maxLength">Zip code must have at
+                                        least
+                                        {{ $v.zip_code.$params.maxLength.max }} letters.
+                                    </div>
                                 </div>
                                 <!--//-->
-                                <div class="error alert-danger" v-if="!$v.image.required">Image is
-                                    required.
+                                <div v-if="$v.password.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.password.required">Password is required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.password.minLength">Password must have at
+                                        least
+                                        {{ $v.password.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.password.maxLength">Password must have at
+                                        least
+                                        {{ $v.password.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.confirmation_password.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.confirmation_password.required">Password
+                                        Confirmation is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.confirmation_password.minLength">Password
+                                        Confirmation
+                                        must have at
+                                        least
+                                        {{ $v.confirmation_password.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.confirmation_password.maxLength">Password
+                                        Confirmation
+                                        must have at
+                                        least
+                                        {{ $v.confirmation_password.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.home_address.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.home_address.required">Home Address is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.home_address.minLength">Home Address must
+                                        have
+                                        at
+                                        least
+                                        {{ $v.home_address.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.home_address.maxLength">Home Address must
+                                        have
+                                        at
+                                        least
+                                        {{ $v.home_address.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.work_address.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.work_address.required">Work Address is
+                                        required.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.work_address.minLength">Work Address must
+                                        have
+                                        at
+                                        least
+                                        {{ $v.work_address.$params.minLength.min }} letters.
+                                    </div>
+                                    <div class="error alert-danger" v-if="!$v.work_address.maxLength">Work Address must
+                                        have
+                                        at
+                                        least
+                                        {{ $v.work_address.$params.maxLength.max }} letters.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.state.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.state.required">Status is
+                                        required.
+                                    </div>
+                                </div>
+                                <!--//-->
+                                <div v-if="$v.image.$anyDirty">
+                                    <div class="error alert-danger" v-if="!$v.image.required">Image is
+                                        required.
+                                    </div>
                                 </div>
                                 <!--//-->
                             </div>
-
+                            <!---------------------end validation------------------->
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group" v-if="editMode">
@@ -854,37 +938,37 @@
                     setTimeout(() => {
                         this.submitStatus = 'OK'
                     }, 500);*/
-                    const isRegister = {
-                        first_name: this.first_name,
-                        last_name: this.last_name,
-                        username: this.username,
-                        email: this.email,
-                        mobile: this.mobile,
-                        home_phone: this.home_phone,
-                        zip_code: this.zip_code,
-                        password: this.password,
-                        confirmation_password: this.confirmation_password,
-                        home_address: this.home_address,
-                        work_address: this.work_address,
-                        state: this.state,
-                        image: this.image,
-                    };
-                    return this.$store.dispatch('Users/isUserRegister', isRegister)
-                        .then(() => {
-                            this.first_name = '';
-                            this.last_name = '';
-                            this.username = '';
-                            this.email = '';
-                            this.mobile = '';
-                            this.home_phone = '';
-                            this.zip_code = '';
-                            this.password = '';
-                            this.confirmation_password = '';
-                            this.home_address = '';
-                            this.work_address = '';
-                            this.state = '';
-                            this.image = '';
-                        })
+                const isRegister = {
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    username: this.username,
+                    email: this.email,
+                    mobile: this.mobile,
+                    home_phone: this.home_phone,
+                    zip_code: this.zip_code,
+                    password: this.password,
+                    confirmation_password: this.confirmation_password,
+                    home_address: this.home_address,
+                    work_address: this.work_address,
+                    state: this.state,
+                    image: this.image,
+                };
+                return this.$store.dispatch('Users/isUserRegister', isRegister)
+                    .then(() => {
+                        this.first_name = '';
+                        this.last_name = '';
+                        this.username = '';
+                        this.email = '';
+                        this.mobile = '';
+                        this.home_phone = '';
+                        this.zip_code = '';
+                        this.password = '';
+                        this.confirmation_password = '';
+                        this.home_address = '';
+                        this.work_address = '';
+                        this.state = '';
+                        this.image = '';
+                    })
                 //}
             },
             userUpdate(user) {

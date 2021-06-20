@@ -41,7 +41,6 @@ const actions = {
         await Axios.get(Axios.defaults.baseURL + `panel/products?page= ${page}`)
             .then(res => {
                 const getProducts = res.data.data;
-                //console.log(getProducts)
                 context.commit('getProducts', getProducts)
             })
             .catch(err => {

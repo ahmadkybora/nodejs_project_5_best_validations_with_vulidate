@@ -77,7 +77,7 @@
         },
         computed: {
             ...mapState({
-                categories: state => state.ProductCategories.isProductCategories,
+                categories: state => state.ProductCategories.isProductCategories.data,
             })
         },
         methods: {

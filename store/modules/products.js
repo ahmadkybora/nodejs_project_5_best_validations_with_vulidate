@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import Swal from 'sweetalert2';
+
 window.Swal = Swal;
 import HelperFunctions from '../../helpers/HelperFunctions';
 
@@ -27,7 +28,7 @@ const actions = {
     async isProducts(context) {
         await Axios.get(Axios.defaults.baseURL + 'products')
             .then(res => {
-                const isProducts = res.data.data.products;
+                const isProducts = res.data.data;
                 const popularProducts = res.data.data.popular_products;
                 context.commit('isProducts', isProducts);
                 context.commit('popularProducts', popularProducts)
@@ -37,10 +38,18 @@ const actions = {
                 );
             })
     },
+
+    /**
+     *
+     * @param context
+     * @param page
+     * @returns {Promise<void>}
+     */
     async getProducts(context, page = 1) {
         await Axios.get(Axios.defaults.baseURL + `panel/products?page= ${page}`)
             .then(res => {
                 const getProducts = res.data.data;
+                console.log(getProducts);
                 context.commit('getProducts', getProducts)
             })
             .catch(err => {
@@ -84,16 +93,24 @@ const actions = {
                 console.log(err)
             })
     },
-    async isProductCreate(context, payload) {
-        const isRegister = {
-            category_id: payload.category_id,
-            title: payload.title,
-            description: payload.description,
-            price: payload.price,
-            icon: payload.icon,
-            status: payload.status,
-        };
-        await Axios.post(Axios.defaults.baseURL + 'panel/products', isRegister,
+
+    /**
+     *
+     * @param context
+     * @param payload
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    async ProductCreate(context, payload) {
+        let formData = new FormData();
+        formData.append("categoryId", payload.categoryId);
+        formData.append("name", payload.name);
+        formData.append("description", payload.description);
+        formData.append("price", payload.price);
+        formData.append("image", payload.image);
+        formData.append("status", payload.status);
+
+        await Axios.post(Axios.defaults.baseURL + 'panel/products/store', formData,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -101,10 +118,12 @@ const actions = {
             })
             .then(res => {
                 switch (res.status) {
-                    case 200:
+                    case 201:
                         Swal.fire('Success!', res.data.message, 'success')
                             .then(() => {
-
+                                const getProducts = res.data.data;
+                                context.commit('getProducts', getProducts);
+                                this.$router.push('/panel/products');
                             });
                         break;
                     case 403:
@@ -127,24 +146,24 @@ const actions = {
                         Swal.fire('Warning!', 'Your Basic Information', 'warning');
                         break;
                 }
-            })
-            .catch(err => {
+            }).catch(err => {
                 switch (err.response.status) {
                     case 422:
-                        var errMsg = [];
-                        for (var error in err.response.data.errors) {
-                            Swal.fire('Error!', error, 'error')
+                        for (let i = 0; i < err.response.data.errors.length; i++) {
+                            Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
                                 .then(() => {
 
                                 });
                         }
                         break;
-                    /*case 503:
-                        Swal.fire('Warning!', res.data.message, 'warning')
-                            .then(() => {
+                    case 503:
+                        for (let i = 0; i < err.response.data.errors.length; i++) {
+                            Swal.fire('Warning!', err.response.data.errors[i].message, 'warning')
+                                .then(() => {
 
-                            });
-                        break;*/
+                                });
+                        }
+                        break;
                     default:
                         Swal.fire('Warning!', 'Your Basic Information', 'warning');
                         break;

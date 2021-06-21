@@ -4,7 +4,7 @@
     <Header/>
     <Banner/>
     <Products/>
-    <PopularProducts/>
+   <!-- <PopularProducts/>-->
     <ProductCategories/>
     <PopularBrands/>
     <Articles/>

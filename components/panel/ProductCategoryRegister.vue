@@ -218,13 +218,8 @@
                             </div>
                             <!--//-->
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <input type="file">
-                                    </div>
-                                </div>
                                 <!--//-->
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <!--//-->
                                         <div class="form-check" v-if="editMode">
@@ -332,11 +327,12 @@
                                     </div>
                                 </div>
                                 <!--//-->
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="file"
                                                @change="onFileSelected"
-                                               name="image" id="image"
+                                               name="image"
+                                               id="image"
                                                class="form-control">
                                     </div>
                                     <div v-if="isSelected !== false">
@@ -344,6 +340,7 @@
                                              style="width: 100px; height: 100px">
                                     </div>
                                 </div>
+                                <!--//-->
                             </div>
                             <!--//-->
                             <div class="row">
@@ -437,17 +434,19 @@
             },
             categoryCreate() {
                 const isRegister = {
-                    brand_id: this.brand_id,
-                    employee_id: this.employee_id,
+                    brandId: this.brandId,
+                    employeeId: this.employeeId,
                     name: this.name,
                     description: this.description,
+                    state: this.state,
+                    image: this.image,
                 };
-                return this.$store.dispatch('ProductCategories/isProductCategoriesCreate', isRegister)
+                return this.$store.dispatch('ProductCategories/ProductCategoriesCreate', isRegister)
             },
             categoryUpdate(category) {
                 const isUpdate = {
                     id: category.id,
-                    brand_id: category.brand_id,
+                    brandId: category.brandId,
                     employeeId: category.employeeId,
                     name: category.name,
                     description: category.description,

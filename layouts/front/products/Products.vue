@@ -90,7 +90,7 @@
         },
         computed: {
             ...mapState({
-                products: state => state.Products.isProducts
+                products: state => state.Products.isProducts.data
             })
         },
         methods: {

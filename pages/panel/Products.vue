@@ -42,11 +42,11 @@
                 <thead class="text-center">
                 <tr>
                     <th>#</th>
-                    <th>Category Title</th>
-                    <th>Product Title</th>
+                    <th>Category Name</th>
+                    <th>Product Name</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <th>Icon</th>
+                    <th>image</th>
                     <th>State</th>
                     <th>Created At / Updated At</th>
                     <th>Action</th>
@@ -55,25 +55,33 @@
                 <tbody class="text-center">
                 <tr v-for="(product, index) in products" :key="product.id">
                     <td>{{ index }}</td>
-                    <!-- <td v-text="product.category.title.substring(0, 5)"></td>-->
-                    <td v-text="product.title.substring(0, 5)"></td>
-                    <td v-text="product.description.substring(0, 5)"></td>
+                    <!--<td v-text="product.ProductCategory.name.substring(0, 10)"></td>
+                    <td v-text="product.name.substring(0, 10)"></td>
+                    <td v-text="product.description.substring(0, 10)"></td>
+                    <td v-text="product.ProductCategory.name.substring(0, 5)"></td>-->
+                    <td v-text="product.ProductCategory.name"></td>
+                    <td v-text="product.name"></td>
+                    <td v-text="product.description"></td>
                     <td v-text="product.price"></td>
                     <td>
-                        <img class="rounded-circle" :src="product.icon" style="width: 50px; height: 50px">
+                        <img class="rounded-circle" :src="product.image" style="width: 50px; height: 50px">
                     </td>
                     <td>
-                        <button v-if="product.status === 'ACTIVE'" class="btn btn-success btn-sm disabled"
-                                v-text="product.status">ACTIVE
+                        <button v-if="product.state === 'ACTIVE'"
+                                class="btn btn-success btn-sm disabled"
+                                v-text="product.state">ACTIVE
                         </button>
-                        <button v-if="product.status === 'INACTIVE'" class="btn btn-warning btn-sm disabled"
-                                v-text="product.status">INACTIVE
+                        <button v-if="product.state === 'INACTIVE'"
+                                class="btn btn-warning btn-sm disabled"
+                                v-text="product.state">INACTIVE
                         </button>
-                        <button v-if="product.status === 'SUSPENDED'" class="btn btn-secondary btn-sm disabled"
-                                v-text="product.status">SUSPENDED
+                        <button v-if="product.state === 'SUSPENDED'"
+                                class="btn btn-secondary btn-sm disabled"
+                                v-text="product.state">SUSPENDED
                         </button>
-                        <button v-if="product.status === 'PENDING'" class="btn btn-danger btn-sm disabled"
-                                v-text="product.status">PENDING
+                        <button v-if="product.state === 'PENDING'"
+                                class="btn btn-danger btn-sm disabled"
+                                v-text="product.state">PENDING
                         </button>
                     </td>
                     <td>{{ product.createdAt + ' ' + product.updatedAt }}</td>
@@ -93,11 +101,11 @@
                 <thead class="text-center">
                 <tr>
                     <th>#</th>
-                    <th>Category Title</th>
-                    <th>Product Title</th>
+                    <th>Category Name</th>
+                    <th>Product Name</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <th>Icon</th>
+                    <th>image</th>
                     <th>State</th>
                     <th>Created At / Updated At</th>
                     <th>Action</th>
@@ -199,14 +207,6 @@
                 return pagesArray;
             },
         },
-        /*watch: {
-          ...mapState({
-            isUpdate: state => state.Products.isUpdate
-          }),
-          if(isUpdate){
-            return this.$store.dispatch('Products/getProducts');
-          }
-        },*/
         methods: {
             changePage(page) {
                 return this.$store.dispatch('Products/getProducts', page);

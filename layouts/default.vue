@@ -4,14 +4,15 @@
     <Header/>
     <Banner/>
     <Products/>
-   <!-- <PopularProducts/>-->
+    <PopularProducts/>
     <ProductCategories/>
+    <popular-product-categories/>
+    <brands/>
     <PopularBrands/>
     <Articles/>
-    <ArticleCategories/>
     <PopularArticles/>
+    <ArticleCategories/>
     <Nuxt/>
-    <brands/>
     <Footer/>
   </div>
 </template>
@@ -19,20 +20,22 @@
 <script>
   import Navbar from '../layouts/front/Navbar'
   import Header from '../layouts/front/Header'
-  import Banner from './front/Banner'
-  import Products from './front/products/Products'
-  import Footer from './front/Footer'
-  import ProductCategories from './front/product-categories/ProductCategories'
-  import Brands from './front/brands/Brands'
-  import ArticleCategories from './front/article-categories/ArticleCategories'
-  import Articles from './front/articles/Articles'
-  import PopularProducts from './front/products/PopularProducts'
-  import PopularBrands from './front/brands/PopularBrands'
-  import PopularArticles from './front/articles/PopularArticles'
+  import Banner from '../layouts/front/Banner'
+  import Products from '../layouts/front/products/Products'
+  import Footer from '../layouts/front/Footer'
+  import ProductCategories from '../layouts/front/product-categories/ProductCategories'
+  import Brands from '../layouts/front/brands/Brands'
+  import ArticleCategories from '../layouts/front/article-categories/ArticleCategories'
+  import Articles from '../layouts/front/articles/Articles'
+  import PopularProducts from '../layouts/front/products/PopularProducts'
+  import PopularBrands from '../layouts/front/brands/PopularBrands'
+  import PopularArticles from '../layouts/front/articles/PopularArticles'
+  import PopularProductCategories from "../layouts/front/product-categories/PopularProductCategories";
 
   export default {
-    name: 'default',
+    name: "index",
     components: {
+      PopularProductCategories,
       PopularArticles,
       PopularBrands,
       PopularProducts,

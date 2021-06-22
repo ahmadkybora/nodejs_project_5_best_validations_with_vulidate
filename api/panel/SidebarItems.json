@@ -78,17 +78,6 @@
   },
   {
     "id": 8,
-    "title": "Products Manager",
-    "titleIcon": "fa fa-envelope",
-    "body_1": "Show All Products",
-    "bodyIcon_1": "fa fa-envelope",
-    "body_2": "Register Products",
-    "bodyIcon_2": "fa fa-envelope",
-    "route_1": "/panel/products",
-    "route_2": "/panel/products/register"
-  },
-  {
-    "id": 9,
     "title": "Articles Manager",
     "titleIcon": "fas fa-eye",
     "body_1": "Show All Articles",
